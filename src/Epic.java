@@ -12,6 +12,8 @@ public class Epic extends Task{
         return taskList;
     }
 
+
+
     public void setTaskList(ArrayList<SubTask> taskList) {
         this.taskList = taskList;
     }
@@ -19,11 +21,13 @@ public class Epic extends Task{
     @Override
     public String toString() {
         return "Epic{" +
-                "taskList=" + taskList +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status='" + status + '\'' +
+                "taskList=" + taskList +
                 '}';
     }
+
+
 }

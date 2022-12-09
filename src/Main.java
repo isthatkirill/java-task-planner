@@ -38,29 +38,21 @@ public class Main {
         taskManager.fillEpic(epic, subtask);
         taskManager.fillEpic(epic, subtask_1);
 
-        System.out.println(epic);
+        System.out.println(taskManager.getEpics());
 
 
-        Epic epic1 = new Epic("День рождения", "День рождения мамы", "NEW");
-        taskManager.createTask(epic1);
+        subtask_1 = new SubTask("Пыль", "Почти закончили с пылью", subtask_1.getId(), "IN_PROGRESS");
+        taskManager.updateTask(subtask_1);
+        SubTask subtask_3 = new SubTask("Уборка ванной", "Убрать санузел (туалет + ванная)", "NEW");
+        taskManager.fillEpic(epic, subtask_3);
 
+        
+        System.out.println(taskManager.getEpics());
+        taskManager.deleteSubTaskById(2);
+        System.out.println(taskManager.getEpics());
+        taskManager.deleteEpicById(1);
+        System.out.println(taskManager.getEpics());
 
-        SubTask subtask_2 = new SubTask("Купить цветы", "Мама любит пионы", "NEW");
-        taskManager.createTask(subtask_2);
-        SubTask subtask_3 = new SubTask("Накрыть стол", "Купить шампанского", "NEW");
-        taskManager.createTask(subtask_3);
-
-
-
-        taskManager.fillEpic(epic1, subtask_2);
-        taskManager.fillEpic(epic1, subtask_3);
-        System.out.println(epic1);
-
-
-        subtask_3 = new SubTask("Накрыть стол", "Шампанское куплено", subtask_3.getEpicsId(), "IN_PROGRESS");
-        taskManager.updateTask(subtask_3);
-
-        System.out.println(epic1);
 
 
     }
