@@ -61,23 +61,25 @@ public class TaskManager {
                 }
             }
             epic.setTaskList(temp);
-
             changingStatusChecker(epic);
-
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epics.put(epic.getId(), epic);
         }
     }
 
-    public void deleteAllTasks(Object o) {
-        if ((o != null) && o.getClass() == Task.class) {
-            Task task = (Task) o;
+    public void deleteAllTasks() {
             tasks = new HashMap<>();
-        } else if ((o != null) && o.getClass() == SubTask.class) {
-            SubTask subTask = (SubTask) o;
+    }
+
+    public void deleteAllEpics() {
+            epics = new HashMap<>();
             subTasks = new HashMap<>();
-        }
+    }
+
+    public void deleteAllSubtasks(Epic epic) {
+            subTasks = new HashMap<>();
+            epic.setTaskList(new ArrayList<>());
     }
 
     public void deleteSubTaskById(int id) {
@@ -137,7 +139,6 @@ public class TaskManager {
             }
         }
     }
-
 
     public HashMap<Integer, Task> getTasks() {
         return tasks;
