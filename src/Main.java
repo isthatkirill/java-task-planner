@@ -26,10 +26,6 @@ public class Main {
 
         System.out.println(taskManager.getEpics()); //DONE
 
-        taskManager.deleteSubTaskById(subtask.getId());
-
-        System.out.println(taskManager.getEpics()); //DONE
-
         System.out.println();
 
         /*--------------------------------------------------------------------------------------------------------*/
@@ -43,12 +39,15 @@ public class Main {
 
         System.out.println(taskManager.getEpics()); //NEW
 
-        subtask_ = new SubTask("Цветы", "Цветы куплены, едем к подруге...", subtask_.getId(),  "IN_PROGRESS");
-        taskManager.updateTask(subtask_);
+        subtask_ = new SubTask("Цветы", "Цветы куплены, едем к подруге...", subtask_.getId(),
+                "IN_PROGRESS");
 
-        taskManager.deleteAllSubtasks(epic_);
+        taskManager.updateTask(subtask_);
 
         System.out.println(taskManager.getEpics());
 
+        taskManager.deleteSubTaskById(subtask_.getId());
+
+        System.out.println(taskManager.getEpics());
     }
 }
