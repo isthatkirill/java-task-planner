@@ -62,6 +62,8 @@ public class TaskManager {
             }
             epic.setTaskList(temp);
 
+            changingStatusChecker(epic);
+
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epics.put(epic.getId(), epic);
@@ -80,17 +82,6 @@ public class TaskManager {
 
     public void deleteSubTaskById(int id) {
         SubTask subTask = subTasks.get(id);
-
-        for (Epic epic : epics.values()) {
-            ArrayList<SubTask> temp = epic.getTaskList();
-            for (SubTask subtask_ : temp) {
-                if (id == subtask_.getId()) {
-                    subTask.setEpicsId(subtask_.getEpicsId());
-                }
-            }
-
-        }
-
         Epic epic = epics.get(subTask.getEpicsId());
         ArrayList<SubTask> temp = epic.getTaskList();
 
@@ -101,8 +92,9 @@ public class TaskManager {
             }
         }
         epic.setTaskList(temp);
-
         subTasks.remove(id);
+
+        changingStatusChecker(epic);
     }
 
     public void deleteTaskById(int id) {
@@ -117,6 +109,33 @@ public class TaskManager {
         if (tasks.get(id) != null) { return tasks.get(id); }
         if (subTasks.get(id) != null) { return subTasks.get(id); }
         return null;
+    }
+
+    void changingStatusChecker(Epic epic) {
+        ArrayList<SubTask> temp = epic.getTaskList();
+        int doneCounter = 0;
+        boolean progressFlag = false;
+
+        for (SubTask each : temp) {
+            if (each.getStatus().equals("IN_PROGRESS")) {
+                epic.setStatus("IN_PROGRESS");
+                progressFlag = true;
+                continue;
+            }
+            if (each.getStatus().equals("DONE")) {
+                doneCounter++;
+                epic.setStatus("IN_PROGRESS");
+                progressFlag = true;
+                if (doneCounter == temp.size()) {
+                    epic.setStatus("DONE");
+                    break;
+                }
+            }
+
+            if (!progressFlag) {
+                epic.setStatus("NEW");
+            }
+        }
     }
 
 

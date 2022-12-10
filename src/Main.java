@@ -41,17 +41,26 @@ public class Main {
         System.out.println(taskManager.getEpics());
 
 
-        subtask_1 = new SubTask("Пыль", "Почти закончили с пылью", subtask_1.getId(), "IN_PROGRESS");
+        subtask_1 = new SubTask("Пыль", "Почти закончили с пылью", subtask_1.getId(), "DONE");
         taskManager.updateTask(subtask_1);
+
+
         SubTask subtask_3 = new SubTask("Уборка ванной", "Убрать санузел (туалет + ванная)", "NEW");
         taskManager.fillEpic(epic, subtask_3);
 
-        
+        subtask = new SubTask("Посуда", "Посуда вымыта", subtask.getId(), "DONE");
+        taskManager.updateTask(subtask);
+
         System.out.println(taskManager.getEpics());
-        taskManager.deleteSubTaskById(2);
+
+        subtask_3 = new SubTask("Уборка ванной", "Убрано", subtask_3.getId(), "NEW");
+        taskManager.updateTask(subtask_3);
+
+        taskManager.deleteSubTaskById(subtask_3.getId());
+
         System.out.println(taskManager.getEpics());
-        taskManager.deleteEpicById(1);
-        System.out.println(taskManager.getEpics());
+
+
 
 
 
