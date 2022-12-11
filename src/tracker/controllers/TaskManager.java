@@ -1,3 +1,7 @@
+package tracker.controllers;
+
+import tracker.model.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -138,7 +142,7 @@ public class TaskManager {
 
     @Override
     public String toString() {
-        return "TaskManager{" +
+        return "tracker.controllers.TaskManager{" +
                 "tasks=" + tasks +
                 ", subTasks=" + subTasks +
                 ", epics=" + epics +

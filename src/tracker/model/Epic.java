@@ -1,5 +1,6 @@
+package tracker.model;
+
 import java.util.ArrayList;
-import java.lang.Runtime.*;
 
 public class Epic extends Task {
 
@@ -11,8 +12,8 @@ public class Epic extends Task {
 
     @Override
     public void setStatus(String status) {
-        StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из TaskManager,
-        if (ste[1].getClassName().equals("Epic")) {         // то обновляем статус, иначе - не обновляем
+        StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из tracker.controllers.TaskManager,
+        if (ste[1].getClassName().equals("tracker.model.Epic")) {         // то обновляем статус, иначе - не обновляем
             this.status = status;
         }
     }
@@ -78,7 +79,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "tracker.model.Epic{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
@@ -86,5 +87,5 @@ public class Epic extends Task {
                 "taskList=" + taskList +
                 '}';
     }
-    
+
 }

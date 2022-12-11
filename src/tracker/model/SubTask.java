@@ -1,3 +1,7 @@
+package tracker.model;
+
+import tracker.model.Task;
+
 public class SubTask extends Task {
 
     private int epicsId;
@@ -20,7 +24,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "tracker.model.SubTask{" +
                 "epicsId=" + epicsId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

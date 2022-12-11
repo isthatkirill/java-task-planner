@@ -1,3 +1,7 @@
+import tracker.model.Epic;
+import tracker.model.Task;
+import tracker.model.SubTask;
+import tracker.controllers.TaskManager;
 public class Main {
 
     public static void main(String[] args) {
@@ -52,7 +56,7 @@ public class Main {
         System.out.println();
 
         taskManager.deleteEpicById(1); //удаление эпика влечет за собой удаление всех подзадач этого эпика из списка
-                                          // в TaskManager
+                                          // в tracker.controllers.TaskManager
         System.out.println(taskManager.getSubTasks());
         System.out.println(taskManager.getEpics());
 
