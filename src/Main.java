@@ -19,10 +19,14 @@ public class Main {
         subtask_1 = new SubTask("Полы", "Полы вымыты", subtask_1.getId(), "DONE");
         taskManager.updateTask(subtask_1);
 
+        epic.setStatus("CHECKER"); // СТАТУС НЕ ОБНОВЛЯЕТСЯ
+
         System.out.println(taskManager.getEpics()); //IN_PROGRESS
 
         subtask = new SubTask("Посуда", "Посуда вымыта", subtask.getId(), "DONE");
         taskManager.updateTask(subtask);
+
+        taskManager.deleteSubTaskById(subtask.getId());
 
         System.out.println(taskManager.getEpics()); //DONE
 
@@ -43,11 +47,21 @@ public class Main {
                 "IN_PROGRESS");
 
         taskManager.updateTask(subtask_);
-
         System.out.println(taskManager.getEpics());
 
-        taskManager.deleteSubTaskById(subtask_.getId());
-
         System.out.println(taskManager.getEpics());
+        System.out.println();
+
+        taskManager.deleteEpicById(1); //удаление эпика влечет за собой удаление всех подзадач из списка
+                                                                                    // в TaskManager
+        System.out.println(taskManager.getSubTasks());
+        System.out.println(taskManager.getEpics());
+
+        System.out.println();
+
+        /*--------------------------------------------------------------------------------------------------------*/
+
+        taskManager.deleteAllSubtasks(); //удаление всех подзадач
+        System.out.println(taskManager.getEpics()); // у всех эпиков больше нет подзадач
     }
 }

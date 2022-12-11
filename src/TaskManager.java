@@ -12,7 +12,7 @@ public class TaskManager {
         return current_id;
     }
 
-    public void createTask(Object o) {
+    public void createTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
             Task task = (Task) o;
             task.setId(++current_id);
@@ -76,9 +76,11 @@ public class TaskManager {
             subTasks = new HashMap<>();
     }
 
-    public void deleteAllSubtasks(Epic epic) {
-            subTasks = new HashMap<>();
+    public void deleteAllSubtasks() {
+        for (Epic epic : epics.values()) {
             epic.setTaskList(new ArrayList<>());
+        }
+        subTasks = new HashMap<>();
     }
 
     public void deleteSubTaskById(int id) {
@@ -92,9 +94,8 @@ public class TaskManager {
                 break;
             }
         }
-        epic.setTaskList(temp);
-        subTasks.remove(id);
 
+        subTasks.remove(id);
         changingStatusChecker(epic);
     }
 
@@ -103,12 +104,21 @@ public class TaskManager {
     }
 
     public void deleteEpicById(int id) {
+        Epic currEpic = epics.get(id);
+        ArrayList<SubTask> temp = currEpic.getTaskList();
+        for (SubTask each : temp) {
+            if (subTasks.containsKey(each.getId())) {
+                subTasks.remove(each.getId());
+            }
+        }
         epics.remove(id);
     }
 
     public Object getTaskById(int id) {
         if (tasks.get(id) != null) { return tasks.get(id); }
         if (subTasks.get(id) != null) { return subTasks.get(id); }
+        if (epics.get(id) != null) { return epics.get(id); }
+
         return null;
     }
 
@@ -121,7 +131,7 @@ public class TaskManager {
             if (each.getStatus().equals("IN_PROGRESS")) {
                 epic.setStatus("IN_PROGRESS");
                 progressFlag = true;
-                continue;
+                break;
             }
             if (each.getStatus().equals("DONE")) {
                 doneCounter++;
