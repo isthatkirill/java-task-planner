@@ -23,8 +23,9 @@ public class Main {
 
         System.out.println(taskManager.getEpics()); //IN_PROGRESS
 
-        subtask = new SubTask("Посуда", "Посуда вымыта", subtask.getId(), "DONE");
+        subtask = new SubTask("Посуда", "Начинаем мыть посуду", subtask.getId(), "IN_PROGRESS");
         taskManager.updateTask(subtask);
+        System.out.println(taskManager.getEpics());
 
         taskManager.deleteSubTaskById(subtask.getId());
 

@@ -17,6 +17,18 @@ public class Epic extends Task {
         }
     }
 
+    public void deleteAllSubtasksInCurrEpic() {
+        taskList = new ArrayList<>();
+    }
+
+    public void addSubtask(SubTask subtask) {
+        taskList.add(subtask);
+    }
+
+    public void deleteSubtask(SubTask subTask) {
+        taskList.remove(subTask);
+    }
+
     public ArrayList<SubTask> getTaskList() {
         return taskList;
     }
