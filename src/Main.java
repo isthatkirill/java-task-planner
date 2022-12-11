@@ -49,12 +49,10 @@ public class Main {
 
         taskManager.updateTask(subtask_);
         System.out.println(taskManager.getEpics());
-
-        System.out.println(taskManager.getEpics());
         System.out.println();
 
-        taskManager.deleteEpicById(1); //удаление эпика влечет за собой удаление всех подзадач из списка
-                                                                                    // в TaskManager
+        taskManager.deleteEpicById(1); //удаление эпика влечет за собой удаление всех подзадач этого эпика из списка
+                                          // в TaskManager
         System.out.println(taskManager.getSubTasks());
         System.out.println(taskManager.getEpics());
 

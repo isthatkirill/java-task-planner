@@ -30,7 +30,6 @@ public class TaskManager {
 
     public void fillEpic(Epic epic, SubTask subTask) {
         subTask.setEpicsId(epic.getId());
-
         epic.addSubtask(subTask);
     }
 
@@ -49,7 +48,6 @@ public class TaskManager {
                         subTask.setEpicsId(subtask_.getEpicsId());
                     }
                 }
-
             }
 
             Epic epic = epics.get(subTask.getEpicsId());
@@ -57,11 +55,10 @@ public class TaskManager {
 
             for (SubTask currTask : temp) {
                 if (currTask.getId() == subTask.getId()) {
-                    temp.set(temp.indexOf(currTask), subTask);
+                    epic.updateSubtask(subTask);
+                    break;
                 }
             }
-            epic.setTaskList(temp);
-            changingStatusChecker(epic);
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epics.put(epic.getId(), epic);
@@ -90,7 +87,6 @@ public class TaskManager {
 
         epic.deleteSubtask(subTask);
         subTasks.remove(id);
-        changingStatusChecker(epic);
     }
 
     public void deleteTaskById(int id) {
@@ -114,33 +110,6 @@ public class TaskManager {
         if (epics.get(id) != null) { return epics.get(id); }
 
         return null;
-    }
-
-    void changingStatusChecker(Epic epic) {
-        ArrayList<SubTask> temp = epic.getTaskList();
-        int doneCounter = 0;
-        boolean progressFlag = false;
-
-        for (SubTask each : temp) {
-            if (each.getStatus().equals("IN_PROGRESS")) {
-                epic.setStatus("IN_PROGRESS");
-                progressFlag = true;
-                break;
-            }
-            if (each.getStatus().equals("DONE")) {
-                doneCounter++;
-                epic.setStatus("IN_PROGRESS");
-                progressFlag = true;
-                if (doneCounter == temp.size()) {
-                    epic.setStatus("DONE");
-                    break;
-                }
-            }
-
-            if (!progressFlag) {
-                epic.setStatus("NEW");
-            }
-        }
     }
 
     public HashMap<Integer, Task> getTasks() {
