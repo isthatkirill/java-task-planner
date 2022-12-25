@@ -12,7 +12,7 @@ public class Epic extends Task {
 
     @Override
     public void setStatus(String status) {
-        StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из tracker.controllers.TaskManager,
+        StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из tracker.interfaces.TaskManager,
         if (ste[1].getClassName().equals("tracker.model.Epic")) {         // то обновляем статус, иначе - не обновляем
             this.status = status;
         }

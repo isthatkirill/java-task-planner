@@ -1,4 +1,4 @@
-package tracker.controllers;
+package tracker.interfaces;
 
 import tracker.model.Epic;
 import tracker.model.SubTask;
@@ -14,7 +14,8 @@ public interface TaskManager {
 
     public void fillEpic(Epic epic, SubTask subTask);
 
-    public void updateTask(Object o);
+    public void updateTask(Task o);
+
     public void deleteAllTasks();
 
     public void deleteAllEpics();
@@ -40,4 +41,6 @@ public interface TaskManager {
     public HashMap<Integer, Epic> getEpics();
 
     public void setEpics(HashMap<Integer, Epic> epics);
+
+    public ArrayList<Task> getHistory();
 }

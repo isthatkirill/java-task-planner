@@ -2,10 +2,16 @@ import tracker.model.Epic;
 import tracker.model.Task;
 import tracker.model.SubTask;
 import tracker.controllers.InMemoryTaskManager;
+import tracker.interfaces.TaskManager;
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        //test_();
+        test();
+
+    }
+    static public void test() {
+        TaskManager taskManager = new InMemoryTaskManager();
 
         Epic epic = new Epic("Уборка", "Генеральная уборка в воскресенье", "NEW");
         taskManager.createTask(epic);
@@ -56,7 +62,7 @@ public class Main {
         System.out.println();
 
         taskManager.deleteEpicById(1); //удаление эпика влечет за собой удаление всех подзадач этого эпика из списка
-                                          // в tracker.controllers.TaskManager
+        // в tracker.controllers.TaskManager
         System.out.println(taskManager.getSubTasks());
         System.out.println(taskManager.getEpics());
 
@@ -66,5 +72,56 @@ public class Main {
 
         taskManager.deleteAllSubtasks(); //удаление всех подзадач
         System.out.println(taskManager.getEpics()); // у всех эпиков больше нет подзадач
+    }
+
+    static public void test_() {
+        TaskManager taskManager = new InMemoryTaskManager();
+
+        Task task = new Task("1", "1", "1");
+        taskManager.createTask(task);
+
+        Task task1 = new Task("2", "2", "2");
+        taskManager.createTask(task1);
+
+        Task task2 = new Task("3", "3", "3");
+        taskManager.createTask(task2);
+
+        Task task3 = new Task("4", "4", "4");
+        taskManager.createTask(task3);
+
+        Task task4 = new Task("5", "5", "5");
+        taskManager.createTask(task4);
+
+        Task task5 = new Task("6", "6", "6");
+        taskManager.createTask(task5);
+
+        Task task6 = new Task("7", "7", "7");
+        taskManager.createTask(task6);
+
+        Task task7 = new Task("8", "8", "1");
+        taskManager.createTask(task7);
+
+        Task task8 = new Task("9", "9", "9");
+        taskManager.createTask(task8);
+
+        Task task9 = new Task("10", "10", "10");
+        taskManager.createTask(task9);
+
+        Task task10 = new Task("11", "11", "11");
+        taskManager.createTask(task10);
+
+        Task task11 = new Task("12", "12", "12");
+        taskManager.createTask(task11);
+
+        Task task12 = new Task("13", "13", "13");
+        taskManager.createTask(task12);
+
+        for (int i = 1; i < 15; i++) {
+            System.out.println(taskManager.getTaskById(i));
+        }
+        System.out.println(taskManager.getHistory());
+
+
+
     }
 }

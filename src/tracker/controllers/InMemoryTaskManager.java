@@ -1,5 +1,6 @@
 package tracker.controllers;
 
+import tracker.interfaces.TaskManager;
 import tracker.model.*;
 
 import java.util.ArrayList;
@@ -10,11 +11,19 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
+    private ArrayList<Task> viewedTasks = new ArrayList<>();
     private int current_id = 0;
 
     @Override
-    public int getCurrent_id() {
-        return current_id;
+    public ArrayList<Task> getHistory() {
+        return viewedTasks;
+    }
+
+    public void addViewedTask(Task task) {
+        if (viewedTasks.size() == 10) {
+            viewedTasks.remove(0);
+        }
+            viewedTasks.add(task);
     }
 
     @Override
@@ -41,7 +50,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Object o) {
+    public void updateTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
             Task task = (Task) o;
             tasks.put(task.getId(), task);;
@@ -119,12 +128,20 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Object getTaskById(int id) {
-        if (tasks.get(id) != null) { return tasks.get(id); }
-        if (subTasks.get(id) != null) { return subTasks.get(id); }
-        if (epics.get(id) != null) { return epics.get(id); }
+        if (tasks.get(id) != null) {
+            addViewedTask(tasks.get(id));
+            return tasks.get(id); }
+        else if (subTasks.get(id) != null) {
+            addViewedTask(subTasks.get(id));
+            return subTasks.get(id); }
+        else if (epics.get(id) != null) {
+            addViewedTask(epics.get(id));
+            return epics.get(id); }
+        else { return null; }
 
-        return null;
     }
+
+
 
     public HashMap<Integer, Task> getTasks() {
         return tasks;
@@ -156,8 +173,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public int getCurrent_id() {
+        return current_id;
+    }
+
+    @Override
     public String toString() {
-        return "tracker.controllers.TaskManager{" +
+        return "tracker.interfaces.TaskManager{" +
                 "tasks=" + tasks +
                 ", subTasks=" + subTasks +
                 ", epics=" + epics +
