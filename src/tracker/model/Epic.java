@@ -6,12 +6,12 @@ public class Epic extends Task {
 
     protected ArrayList<SubTask> taskList = new ArrayList<>();
 
-    public Epic(String title, String description, String status) {
+    public Epic(String title, String description, Status status) {
         super(title, description, status);
     }
 
     @Override
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из tracker.interfaces.TaskManager,
         if (ste[1].getClassName().equals("tracker.model.Epic")) {         // то обновляем статус, иначе - не обновляем
             this.status = status;
@@ -58,22 +58,22 @@ public class Epic extends Task {
         boolean progressFlag = false;
 
         for (SubTask each : taskList) {
-            if (each.getStatus().equals("IN_PROGRESS")) {
-                setStatus("IN_PROGRESS");
+            if (each.getStatus().equals(Status.IN_PROGRESS)) {
+                setStatus(Status.IN_PROGRESS);
                 progressFlag = true;
                 break;
             }
-            if (each.getStatus().equals("DONE")) {
+            if (each.getStatus().equals(Status.DONE)) {
                 doneCounter++;
-                setStatus("IN_PROGRESS");
+                setStatus(Status.IN_PROGRESS);
                 progressFlag = true;
                 if (doneCounter == taskList.size()) {
-                    setStatus("DONE");
+                    setStatus(Status.DONE);
                     break;
                 }
                 continue;
             }
-            setStatus("NEW");
+            setStatus(Status.NEW);
         }
     }
 

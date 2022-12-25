@@ -6,11 +6,11 @@ public class SubTask extends Task {
 
     private int epicsId;
 
-    public SubTask(String title, String description, String status) {
+    public SubTask(String title, String description, Status status) {
         super(title, description, status);
     }
 
-    public SubTask(String title, String description, int id, String status) {
+    public SubTask(String title, String description, int id, Status status) {
         super(title, description, id, status);
     }
 
