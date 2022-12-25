@@ -1,11 +1,11 @@
 import tracker.model.Epic;
 import tracker.model.Task;
 import tracker.model.SubTask;
-import tracker.controllers.TaskManager;
+import tracker.controllers.InMemoryTaskManager;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         Epic epic = new Epic("Уборка", "Генеральная уборка в воскресенье", "NEW");
         taskManager.createTask(epic);
