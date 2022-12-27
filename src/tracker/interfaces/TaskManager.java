@@ -42,5 +42,4 @@ public interface TaskManager {
 
     public void setEpics(HashMap<Integer, Epic> epics);
 
-    public ArrayList<Task> getHistory();
 }

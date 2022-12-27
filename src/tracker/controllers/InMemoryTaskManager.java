@@ -1,7 +1,9 @@
 package tracker.controllers;
 
+import tracker.interfaces.HistoryManager;
 import tracker.interfaces.TaskManager;
 import tracker.model.*;
+import tracker.util.Managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,20 +13,10 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
-    private ArrayList<Task> viewedTasks = new ArrayList<>();
     private int current_id = 0;
+    HistoryManager historyManager =  Managers.getDefaultHistory();
 
-    @Override
-    public ArrayList<Task> getHistory() {
-        return viewedTasks;
-    }
 
-    public void addViewedTask(Task task) {
-        if (viewedTasks.size() == 10) {
-            viewedTasks.remove(0);
-        }
-            viewedTasks.add(task);
-    }
 
     @Override
     public void createTask(Task o) {
@@ -129,14 +121,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Object getTaskById(int id) {
         if (tasks.get(id) != null) {
-            addViewedTask(tasks.get(id));
-            return tasks.get(id); }
+            historyManager.add(tasks.get(id));
+            return tasks.get(id);
+        }
         else if (subTasks.get(id) != null) {
-            addViewedTask(subTasks.get(id));
-            return subTasks.get(id); }
+            historyManager.add(subTasks.get(id));
+            return subTasks.get(id);
+        }
         else if (epics.get(id) != null) {
-            addViewedTask(epics.get(id));
-            return epics.get(id); }
+            historyManager.add(epics.get(id));
+            return epics.get(id);
+        }
         else { return null; }
 
     }
