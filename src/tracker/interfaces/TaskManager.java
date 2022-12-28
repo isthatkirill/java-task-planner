@@ -4,7 +4,6 @@ import tracker.model.Epic;
 import tracker.model.SubTask;
 import tracker.model.Task;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface TaskManager {
@@ -42,4 +41,5 @@ public interface TaskManager {
 
     public void setEpics(HashMap<Integer, Epic> epics);
 
+    HistoryManager getHistoryManager();
 }

@@ -1,7 +1,9 @@
 import tracker.interfaces.HistoryManager;
-import tracker.model.*;
-import tracker.controllers.InMemoryTaskManager;
 import tracker.interfaces.TaskManager;
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.SubTask;
+import tracker.model.Task;
 import tracker.util.Managers;
 
 public class Main {
@@ -10,11 +12,10 @@ public class Main {
         test_();
     }
 
-
     static public void test_() {
 
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
+        HistoryManager historyManager = taskManager.getHistoryManager();
 
         Task task = new Task("Оплатить обучение", "Оплатить обучение до 02.02.", Status.NEW);
         taskManager.createTask(task);

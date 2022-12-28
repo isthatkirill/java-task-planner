@@ -2,7 +2,9 @@ package tracker.controllers;
 
 import tracker.interfaces.HistoryManager;
 import tracker.interfaces.TaskManager;
-import tracker.model.*;
+import tracker.model.Epic;
+import tracker.model.SubTask;
+import tracker.model.Task;
 import tracker.util.Managers;
 
 import java.util.ArrayList;
@@ -14,9 +16,12 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private int current_id = 0;
-    HistoryManager historyManager =  Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-
+    @Override
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
 
     @Override
     public void createTask(Task o) {
@@ -45,7 +50,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
             Task task = (Task) o;
-            tasks.put(task.getId(), task);;
+            tasks.put(task.getId(), task);
+
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
             subTasks.put(subTask.getId(), subTask);
@@ -76,12 +82,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
-            tasks = new HashMap<>();
+        tasks = new HashMap<>();
     }
 
+    @Override
     public void deleteAllEpics() {
-            epics = new HashMap<>();
-            subTasks = new HashMap<>();
+        epics = new HashMap<>();
+        subTasks = new HashMap<>();
     }
 
     @Override
@@ -123,21 +130,19 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.get(id) != null) {
             historyManager.add(tasks.get(id));
             return tasks.get(id);
-        }
-        else if (subTasks.get(id) != null) {
+        } else if (subTasks.get(id) != null) {
             historyManager.add(subTasks.get(id));
             return subTasks.get(id);
-        }
-        else if (epics.get(id) != null) {
+        } else if (epics.get(id) != null) {
             historyManager.add(epics.get(id));
             return epics.get(id);
+        } else {
+            return null;
         }
-        else { return null; }
 
     }
 
-
-
+    @Override
     public HashMap<Integer, Task> getTasks() {
         return tasks;
     }
