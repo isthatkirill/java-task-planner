@@ -5,97 +5,81 @@ import tracker.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private ArrayList<Task> viewedTasks = new ArrayList<>();
-    private CustomLinkedList<Task> taskCustomLinkedList = new CustomLinkedList<>();
+    private ArrayList<Task> history = new ArrayList<>();
+    private CustomLinkedList<Task> customList = new CustomLinkedList<>();
     private HashMap<Integer, Node> nodesMap = new HashMap<>();
 
     @Override
     public ArrayList<Task> getHistory() {
-        return taskCustomLinkedList.getTasks();
+        return customList.getTasks();
     }
 
     @Override
     public void remove(int id) {
-        for (Task task : viewedTasks) {
-            if (task.getId() == id) {
-                viewedTasks.remove(task);
-            }
-        }
+        customList.removeNode(nodesMap.get(id));
+        nodesMap.remove(id);
     }
 
     @Override
     public void add(Task task) {
-        taskCustomLinkedList.linkLast(task);
+        if (nodesMap.containsKey(task.getId())) {
+            customList.removeNode(nodesMap.get(task.getId()));
+            nodesMap.remove(task.getId());
+        }
+        nodesMap.put(task.getId(), customList.linkLast(task));
 
     }
 
     public static class CustomLinkedList<T> {
 
-        private Node<T> head;
-        private Node<T> tail;
+        private Node head;
+        private Node tail;
         private int size = 0;
 
-        public void linkLast(T element) {
-            Node temp = new Node(element, null);
-            if (tail == null) {
-                head = tail = temp;
+        public Node linkLast(T element) {
+            Node<T> newNode = new Node<T>(element);
+
+            if(head == null) {
+                head = tail = newNode;
+                head.prev = null;
+                tail.next = null;
             } else {
-                tail.next = temp;
-                tail = temp;
+                tail.next = newNode;
+                newNode.prev = tail;
+                tail = newNode;
+                tail.next = null;
             }
-            size++;
+            return tail;
         }
 
         public ArrayList<Task> getTasks() {
-            ArrayList<Task> listToReturn = new ArrayList<>();
-            CustomLinkedListIterator iterator = new CustomLinkedListIterator(head);
+            ArrayList<Task> history = new ArrayList<>();
+            Node<T> ptr = head;
 
-            while(iterator.hasNext()) {
-                listToReturn.add((Task) iterator.next());
+            while (ptr != null) {
+                history.add((Task) ptr.data);
+                ptr = ptr.next;
+
             }
-            return listToReturn;
-
+            return history;
         }
 
-        class CustomLinkedListIterator implements Iterator<T> {
-            Node curr;
-
-            public CustomLinkedListIterator(Node head) {
-                curr = head;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return curr != null;
-            }
-
-            @Override
-            public T next() {
-                T result = (T) curr.data;
-                curr = curr.next;
-                return result;
-            }
-        }
-
-        public void removeNode(Node del)
+        public void removeNode(Node<T> node)
         {
-            if (head == null || del == null) {
-                return;
+            if (node.prev == null) {
+                head = node.next;
+            } else {
+                node.prev.next = node.next;
             }
-            if (head == del) {
-                head = del.next;
+
+            if (node.next == null) {
+                tail = node.prev;
+            } else {
+                node.next.prev = node.prev;
             }
-            if (del.next != null) {
-                del.next.prev = del.prev;
-            }
-            if (del.prev != null) {
-                del.prev.next = del.next;
-            }
-            return;
         }
 
     }
