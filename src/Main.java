@@ -59,7 +59,7 @@ public class Main {
 
         taskManager.getTaskById(task.getId());
         System.out.println(historyManager.getHistory() + "\n");
-        taskManager.getTaskById(epic.getId());
+        taskManager.getTaskById(epic2.getId());
         System.out.println(historyManager.getHistory() + "\n");
 
 

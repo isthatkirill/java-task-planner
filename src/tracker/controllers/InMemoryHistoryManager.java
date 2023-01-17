@@ -29,18 +29,17 @@ public class InMemoryHistoryManager implements HistoryManager {
             customList.removeNode(nodesMap.get(task.getId()));
             nodesMap.remove(task.getId());
         }
-        nodesMap.put(task.getId(), customList.linkLast(task));
-
+        customList.linkLast(task);
     }
 
-    public static class CustomLinkedList<T> {
+    public class CustomLinkedList<T> {
 
         private Node head;
         private Node tail;
         private int size = 0;
 
-        public Node linkLast(T element) {
-            Node<T> newNode = new Node<T>(element);
+        public void linkLast(Task task) {
+            Node<Task> newNode = new Node<>(task);
 
             if(head == null) {
                 head = tail = newNode;
@@ -52,12 +51,13 @@ public class InMemoryHistoryManager implements HistoryManager {
                 tail = newNode;
                 tail.next = null;
             }
-            return tail;
+            size++;
+            nodesMap.put(task.getId(), tail);
         }
 
         public ArrayList<Task> getTasks() {
             ArrayList<Task> history = new ArrayList<>();
-            Node<T> ptr = head;
+            Node ptr = head;
 
             while (ptr != null) {
                 history.add((Task) ptr.data);
