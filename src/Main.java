@@ -62,21 +62,14 @@ public class Main {
         taskManager.getTaskById(epic2.getId());
         System.out.println(historyManager.getHistory() + "\n");
 
+       //--------------------проверка правильности удаления тасков и эпиков---------------------------------//
+
+        taskManager.deleteTaskById(task.getId());
+        System.out.println(historyManager.getHistory() + "\n");
+
+        taskManager.deleteEpicById(epic.getId());
+        System.out.println(historyManager.getHistory() + "\n");
 
 
-
-
-
-
-
-       /* //--------------------проверка правильности удаления task---------------------------------//
-
-        taskManager.deleteTaskById(1);
-        System.out.println(historyManager.getHistory());
-
-        //-------------------проверка правильности удаления эпиков------------------------------//
-
-        taskManager.deleteEpicById(3);
-        System.out.println(historyManager.getHistory());*/
     }
 }
