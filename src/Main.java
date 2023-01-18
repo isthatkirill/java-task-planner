@@ -9,10 +9,10 @@ import tracker.util.Managers;
 public class Main {
 
     public static void main(String[] args) {
-        test_();
+        test();
     }
 
-    static public void test_() {
+    public static void test() {
 
         TaskManager taskManager = Managers.getDefault();
         HistoryManager historyManager = taskManager.getHistoryManager();
@@ -37,6 +37,7 @@ public class Main {
         SubTask subTask2 = new SubTask("Пылесос", "Пропылесосить кладовку", Status.NEW);
         taskManager.createTask(subTask2);
         SubTask subTask3 = new SubTask("Мебель", "Переставить мебель в гостинной", Status.NEW);
+        taskManager.createTask(subTask3);
 
         taskManager.fillEpic(epic, subtask);
         taskManager.fillEpic(epic, subTask2);
@@ -62,7 +63,7 @@ public class Main {
         taskManager.getTaskById(epic2.getId());
         System.out.println(historyManager.getHistory() + "\n");
 
-       //--------------------проверка правильности удаления тасков и эпиков---------------------------------//
+        //--------------------проверка правильности удаления тасков и эпиков---------------------------------//
 
         taskManager.deleteTaskById(task.getId());
         System.out.println(historyManager.getHistory() + "\n");

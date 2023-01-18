@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    protected ArrayList<SubTask> taskList = new ArrayList<>();
+    private ArrayList<SubTask> taskList = new ArrayList<>();
 
     public Epic(String title, String description, Status status) {
         super(title, description, status);
@@ -12,8 +12,8 @@ public class Epic extends Task {
 
     @Override
     public void setStatus(Status status) {
-        StackTraceElement[] ste = new Exception().getStackTrace();  // проверяем, откуда вызван метод, если из tracker.interfaces.TaskManager,
-        if (ste[1].getClassName().equals("tracker.model.Epic")) {         // то обновляем статус, иначе - не обновляем
+        StackTraceElement[] ste = new Exception().getStackTrace();
+        if (ste[1].getClassName().equals("tracker.model.Epic")) {
             this.status = status;
         }
     }
@@ -35,7 +35,8 @@ public class Epic extends Task {
 
     public void updateSubtask(SubTask subtask) {
         int index = 0;
-        for (SubTask subtask_ : taskList) {;
+        for (SubTask subtask_ : taskList) {
+            ;
             if (subtask_.getId() == subtask.getId()) {
                 break;
             }
@@ -53,7 +54,7 @@ public class Epic extends Task {
         this.taskList = taskList;
     }
 
-    void changingStatusChecker() {
+    private void changingStatusChecker() {
         int doneCounter = 0;
         boolean progressFlag = false;
 

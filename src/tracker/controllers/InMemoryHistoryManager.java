@@ -10,7 +10,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private ArrayList<Task> history = new ArrayList<>();
     private CustomLinkedList<Task> customList = new CustomLinkedList<>();
-    private HashMap<Integer, Node> nodesMap = new HashMap<>();
 
     @Override
     public ArrayList<Task> getHistory() {
@@ -19,16 +18,11 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        customList.removeNode(nodesMap.get(id));
-        nodesMap.remove(id);
+        customList.removeNode(customList.getNodesMap().get(id));
     }
 
     @Override
     public void add(Task task) {
-        if (nodesMap.containsKey(task.getId())) {
-            customList.removeNode(nodesMap.get(task.getId()));
-            nodesMap.remove(task.getId());
-        }
         customList.linkLast(task);
     }
 
@@ -38,10 +32,22 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node tail;
         private int size = 0;
 
+        private HashMap<Integer, Node<T>> nodesMap = new HashMap<>();
+
+        public HashMap<Integer, Node<T>> getNodesMap() {
+            return nodesMap;
+        }
+
         public void linkLast(Task task) {
+
+            if (nodesMap.containsKey(task.getId())) {
+                removeNode(nodesMap.get(task.getId()));
+                nodesMap.remove(task.getId());
+            }
+
             Node<Task> newNode = new Node<>(task);
 
-            if(head == null) {
+            if (head == null) {
                 head = tail = newNode;
                 head.prev = null;
                 tail.next = null;
@@ -57,18 +63,19 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         public ArrayList<Task> getTasks() {
             ArrayList<Task> history = new ArrayList<>();
-            Node ptr = head;
+            Node currentTask = head;
 
-            while (ptr != null) {
-                history.add((Task) ptr.data);
-                ptr = ptr.next;
+            while (currentTask != null) {
+                history.add((Task) currentTask.data);
+                currentTask = currentTask.next;
 
             }
             return history;
         }
 
-        public void removeNode(Node<T> node)
-        {
+        public void removeNode(Node<T> node) {
+            nodesMap.remove(node);
+
             if (node.prev == null) {
                 head = node.next;
             } else {
