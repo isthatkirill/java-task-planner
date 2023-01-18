@@ -53,6 +53,8 @@ public class Main {
         taskManager.getTaskById(task.getId());
         taskManager.getTaskById(task2.getId());
         taskManager.getTaskById(epic.getId());
+        taskManager.getTaskById(subtask.getId());      //  добавление в список просмотренных субтасков
+        taskManager.getTaskById(subTask2.getId());     //  одного из эпиков
         taskManager.getTaskById(epic2.getId());
         System.out.println(historyManager.getHistory() + "\n");
 
@@ -68,8 +70,8 @@ public class Main {
         taskManager.deleteTaskById(task.getId());
         System.out.println(historyManager.getHistory() + "\n");
 
-        taskManager.deleteEpicById(epic.getId());
-        System.out.println(historyManager.getHistory() + "\n");
+        taskManager.deleteTaskById(epic.getId());    // из истории просмотров удалился как эпик, так и два
+        System.out.println(historyManager.getHistory() + "\n"); // просмотренных субтаска
 
 
     }

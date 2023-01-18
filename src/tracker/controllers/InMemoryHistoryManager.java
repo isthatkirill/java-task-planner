@@ -1,6 +1,8 @@
 package tracker.controllers;
 
 import tracker.interfaces.HistoryManager;
+import tracker.model.Epic;
+import tracker.model.SubTask;
 import tracker.model.Task;
 
 import java.util.ArrayList;
@@ -75,6 +77,15 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         public void removeNode(Node<T> node) {
             nodesMap.remove(node);
+
+            if (node.data.getClass() == Epic.class) {
+                 Epic epic = (Epic) node.data;
+                 for (SubTask subTask : epic.getTaskList()) {
+                     if (nodesMap.get(subTask.getId()) != null) {
+                         removeNode(nodesMap.get(subTask.getId()));
+                     }
+                 }
+            }
 
             if (node.prev == null) {
                 head = node.next;
