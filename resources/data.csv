@@ -1,0 +1,4 @@
+id;type;name;status;description;epic
+1;Task;Кот;DONE;Корм куплен
+2;Epic;Уборка;NEW;Генеральная уборка в эту среду
+ 

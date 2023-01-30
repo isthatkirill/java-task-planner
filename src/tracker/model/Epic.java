@@ -74,7 +74,6 @@ public class Epic extends Task {
                 }
                 continue;
             }
-            setStatus(Status.NEW);
         }
     }
 

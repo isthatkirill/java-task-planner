@@ -20,7 +20,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        customList.removeNode(customList.getNodesMap().get(id));
+        if (customList.getNodesMap().containsKey(id)) {
+            customList.removeNode(customList.getNodesMap().get(id));
+        }
     }
 
     @Override
@@ -79,12 +81,12 @@ public class InMemoryHistoryManager implements HistoryManager {
             nodesMap.remove(node);
 
             if (node.data.getClass() == Epic.class) {
-                 Epic epic = (Epic) node.data;
-                 for (SubTask subTask : epic.getTaskList()) {
-                     if (nodesMap.get(subTask.getId()) != null) {
-                         removeNode(nodesMap.get(subTask.getId()));
-                     }
-                 }
+                Epic epic = (Epic) node.data;
+                for (SubTask subTask : epic.getTaskList()) {
+                    if (nodesMap.get(subTask.getId()) != null) {
+                        removeNode(nodesMap.get(subTask.getId()));
+                    }
+                }
             }
 
             if (node.prev == null) {
