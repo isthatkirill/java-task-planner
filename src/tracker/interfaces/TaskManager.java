@@ -7,39 +7,39 @@ import tracker.model.Task;
 import java.util.HashMap;
 
 public interface TaskManager {
-    public int getCurrent_id();
+    int getCurrent_id();
 
-    public void createTask(Task o);
+    void createTask(Task o);
 
-    public void fillEpic(Epic epic, SubTask subTask);
+    void fillEpic(Epic epic, SubTask subTask);
 
-    public void updateTask(Task o);
+    void updateTask(Task o);
 
-    public void deleteAllTasks();
+    void deleteAllTasks();
 
-    public void deleteAllEpics();
+    void deleteAllEpics();
 
-    public void deleteAllSubtasks();
+    void deleteAllSubtasks();
 
-    public void deleteSubTaskById(int id);
+    void deleteSubTaskById(int id);
 
-    public void deleteTaskById(int id);
+    void deleteTaskById(int id);
 
-    public void deleteEpicById(int id);
+    void deleteEpicById(int id);
 
-    public Object getTaskById(int id);
+    Object getTaskById(int id);
 
-    public HashMap<Integer, Task> getTasks();
+    HashMap<Integer, Task> getTasks();
 
-    public void setTasks(HashMap<Integer, Task> tasks);
+    void setTasks(HashMap<Integer, Task> tasks);
 
-    public HashMap<Integer, SubTask> getSubTasks();
+    HashMap<Integer, SubTask> getSubTasks();
 
-    public void setSubTasks(HashMap<Integer, SubTask> subTasks);
+    void setSubTasks(HashMap<Integer, SubTask> subTasks);
 
-    public HashMap<Integer, Epic> getEpics();
+    HashMap<Integer, Epic> getEpics();
 
-    public void setEpics(HashMap<Integer, Epic> epics);
+    void setEpics(HashMap<Integer, Epic> epics);
 
     HistoryManager getHistoryManager();
 }

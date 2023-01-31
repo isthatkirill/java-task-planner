@@ -12,10 +12,10 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private int current_id = 0;
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected int current_id = 0;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -26,7 +26,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void createTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
-            Task task = (Task) o;
+            Task task = o;
             task.setId(++current_id);
             tasks.put(current_id, task);
         } else if ((o != null) && o.getClass() == SubTask.class) {
@@ -49,7 +49,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
-            Task task = (Task) o;
+            Task task = o;
             tasks.put(task.getId(), task);
 
         } else if ((o != null) && o.getClass() == SubTask.class) {
@@ -131,6 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (SubTask each : temp) {
             if (subTasks.containsKey(each.getId())) {
                 subTasks.remove(each.getId());
+                historyManager.remove(each.getId());
             }
         }
         epics.remove(id);
@@ -138,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Object getTaskById(int id) {
+    public Task getTaskById(int id) {
         if (tasks.get(id) != null) {
             historyManager.add(tasks.get(id));
             return tasks.get(id);

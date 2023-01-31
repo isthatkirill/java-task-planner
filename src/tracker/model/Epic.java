@@ -10,6 +10,10 @@ public class Epic extends Task {
         super(title, description, status);
     }
 
+    public Epic(String title, int id, String description, Status status) {
+        super(title, description, id, status);
+    }
+
     @Override
     public void setStatus(Status status) {
         StackTraceElement[] ste = new Exception().getStackTrace();
@@ -36,7 +40,6 @@ public class Epic extends Task {
     public void updateSubtask(SubTask subtask) {
         int index = 0;
         for (SubTask subtask_ : taskList) {
-            ;
             if (subtask_.getId() == subtask.getId()) {
                 break;
             }
