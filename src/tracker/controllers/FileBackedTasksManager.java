@@ -1,6 +1,6 @@
 package tracker.controllers;
 
-import tracker.customExceptions.ManagerSaveException;
+import tracker.exceptions.ManagerSaveException;
 import tracker.interfaces.HistoryManager;
 import tracker.interfaces.TaskManager;
 import tracker.model.*;
@@ -14,7 +14,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     private final String path;
 
-    FileBackedTasksManager(String path) {
+    public FileBackedTasksManager(String path) {
         this.path = path;
     }
 
@@ -88,8 +88,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
             printWriter.write("\n");
             printWriter.write(historyToString(this.getHistoryManager()));
-            printWriter.close();
-
         } catch (IOException e) {
             throw new ManagerSaveException("Error when working with the file");
         }
@@ -207,6 +205,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         fileManager.getTaskById(subtask.getId());
         fileManager.getTaskById(epic.getId());
         fileManager.getTaskById(subTask2.getId());
+        fileManager.deleteTaskById(subTask2.getId());
 
         System.out.println("-------------------------filemanager (записанный в файл)------------------------");
         System.out.println(fileManager);

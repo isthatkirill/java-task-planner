@@ -27,7 +27,7 @@ public interface TaskManager {
 
     void deleteEpicById(int id);
 
-    Object getTaskById(int id);
+    Task getTaskById(int id);
 
     HashMap<Integer, Task> getTasks();
 

@@ -26,9 +26,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void createTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
-            Task task = o;
-            task.setId(++current_id);
-            tasks.put(current_id, task);
+            o.setId(++current_id);
+            tasks.put(current_id, o);
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
             subTask.setId(++current_id);
@@ -49,8 +48,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
-            Task task = o;
-            tasks.put(task.getId(), task);
+            tasks.put(o.getId(), o);
 
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;

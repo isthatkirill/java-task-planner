@@ -4,4 +4,4 @@ id;type;name;status;description;epic
 3;SubTask;Мытье полов;DONE;Полы вымыты;2
 4;SubTask;Пылесос;NEW;Пропылесосить кладовку;2
 
-1;3;2;4;
+1;3;2;

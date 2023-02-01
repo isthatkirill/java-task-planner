@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final ArrayList<Task> history = new ArrayList<>();
     private final CustomLinkedList<Task> customList = new CustomLinkedList<>();
 
     @Override
@@ -30,11 +29,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         customList.linkLast(task);
     }
 
-    public class CustomLinkedList<T> {
+    public class CustomLinkedList<T extends Task> {
 
-        private Node head;
-        private Node tail;
-        private int size = 0;
+        private Node<T> head;
+        private Node<T> tail;
 
         private final HashMap<Integer, Node<T>> nodesMap = new HashMap<>();
 
@@ -42,14 +40,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             return nodesMap;
         }
 
-        public void linkLast(Task task) {
+        public void linkLast(T task) {
 
             if (nodesMap.containsKey(task.getId())) {
                 removeNode(nodesMap.get(task.getId()));
                 nodesMap.remove(task.getId());
             }
 
-            Node<Task> newNode = new Node<>(task);
+            Node<T> newNode = new Node<>(task);
 
             if (head == null) {
                 head = tail = newNode;
@@ -61,16 +59,15 @@ public class InMemoryHistoryManager implements HistoryManager {
                 tail = newNode;
                 tail.next = null;
             }
-            size++;
             nodesMap.put(task.getId(), tail);
         }
 
-        public ArrayList<Task> getTasks() {
-            ArrayList<Task> history = new ArrayList<>();
-            Node currentTask = head;
+        public ArrayList<T> getTasks() {
+            ArrayList<T> history = new ArrayList<>();
+            Node<T> currentTask = head;
 
             while (currentTask != null) {
-                history.add((Task) currentTask.data);
+                history.add(currentTask.data);
                 currentTask = currentTask.next;
 
             }
@@ -78,7 +75,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         public void removeNode(Node<T> node) {
-            nodesMap.remove(node);
+            nodesMap.remove(node.data.getId());
 
             if (node.data.getClass() == Epic.class) {
                 Epic epic = (Epic) node.data;
