@@ -3,7 +3,6 @@ package tracker.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Epic extends Task {
 
@@ -108,13 +107,12 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "endTime=" + endTime +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
                 ", startTime=" + startTime +
-                ", duration=" + duration +
+                ", endTime=" + endTime +
                 "taskList=" + taskList +
                 '}';
     }

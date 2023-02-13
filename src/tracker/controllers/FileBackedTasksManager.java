@@ -169,7 +169,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     task.getStatus() + ";" + task.getDescription() + ";" + ((SubTask) task).getEpicsId() + "\n";
         } else {
             return task.getId() + ";" + task.getClass().getSimpleName() + ";" + task.getTitle() + ";" +
-                    task.getStatus() + ";" + task.getDescription()  + ";" + ";" + task.getStartTime().format(dateTimeFormatter) + ";" +
+                    task.getStatus() + ";" + task.getDescription() + ";" + ";" + task.getStartTime().format(dateTimeFormatter) + ";" +
                     task.getDuration() + ";" + task.getEndTime().format(dateTimeFormatter) + "\n";
         }
     }
@@ -189,7 +189,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         fileManager.getTaskById(task.getId());
 
 
-        /*Epic epic = new Epic("Уборка", "Генеральная уборка в эту среду", Status.NEW);
+        Epic epic = new Epic("Уборка", "Генеральная уборка в эту среду", Status.NEW);
         fileManager.createTask(epic);
 
         SubTask subtask = new SubTask("Мытье полов", "Помыть полы во всех комнатах", Status.NEW);
@@ -223,8 +223,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         FileBackedTasksManager fileManagerBacked = loadFromFile(new File("resources/data.csv"));
         System.out.println("------------------------fileManagerBacked (восстановленный из файла)----------------");
         System.out.println(fileManagerBacked);
-        System.out.println(fileManagerBacked.getHistoryManager().getHistory());*/
-
+        System.out.println(fileManagerBacked.getHistoryManager().getHistory());
     }
 
 

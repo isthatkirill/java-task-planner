@@ -32,24 +32,33 @@ public class Main {
         taskManager.createTask(task);
 
         SubTask subTask2 = new SubTask("2", "2", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 13, 00), Duration.ofMinutes(10));
+                LocalDateTime.of(2025, 5, 5, 19, 10), Duration.ofMinutes(10));
         taskManager.createTask(subTask2);
 
         SubTask subTask3 = new SubTask("3", "3", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 18, 30), Duration.ofMinutes(90));
+                LocalDateTime.of(2025, 5, 5, 16, 30), Duration.ofMinutes(90));
         taskManager.createTask(subTask3);
 
         SubTask subTask4 = new SubTask("4", "4", Status.IN_PROGRESS);
         taskManager.createTask(subTask4);
 
-        /*taskManager.fillEpic(epic, subTask1);
+        taskManager.fillEpic(epic, subTask1);
         taskManager.fillEpic(epic, subTask2);
         taskManager.fillEpic(epic, subTask3);
-        taskManager.fillEpic(epic, subTask4);*/
+        taskManager.fillEpic(epic, subTask4);
 
+        System.out.println(epic);
         System.out.println(taskManager.getPrioritizedTasks());
+        System.out.println();
 
 
+        subTask2 = new SubTask("2", "2", subTask2.getId(), Status.NEW,
+                LocalDateTime.of(2025, 5, 5, 16, 40), Duration.ofMinutes(30));
+        taskManager.updateTask(subTask2);
+
+        System.out.println(epic);
+        System.out.println(taskManager.getPrioritizedTasks());
+        System.out.println();
 
 
     }

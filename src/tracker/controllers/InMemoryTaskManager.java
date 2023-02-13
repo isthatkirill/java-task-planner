@@ -7,26 +7,28 @@ import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.util.Managers;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    protected HashMap<Integer, Task> tasks = new HashMap<>();
-    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    protected HashMap<Integer, Epic> epics = new HashMap<>();
-    protected TreeSet<Task> taskByTime = new TreeSet<>((o1, o2) -> {
+    private final Comparator<Task> comparator = (o1, o2) -> {
         if (o1.getStartTime() == null) {
             return 1;
         } else if (o2.getStartTime() == null) {
             return -1;
         }
         return o1.getStartTime().compareTo(o2.getStartTime());
-    });
+    };
+
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected TreeSet<Task> taskByTime = new TreeSet<>(comparator);
     protected int current_id = 0;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     protected final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm");
@@ -40,7 +42,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void createTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
             o.setId(++current_id);
-            tasks.put(current_id, o);
             if (isCrossing(o)) {
                 o.setDuration(null);
                 o.setStartTime(null);
@@ -48,10 +49,10 @@ public class InMemoryTaskManager implements TaskManager {
             } else {
                 taskByTime.add(o);
             }
+            tasks.put(current_id, o);
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
             subTask.setId(++current_id);
-            subTasks.put(current_id, subTask);
             if (isCrossing(o)) {
                 o.setDuration(null);
                 o.setStartTime(null);
@@ -59,6 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
             } else {
                 taskByTime.add(o);
             }
+            subTasks.put(current_id, subTask);
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epic.setId(++current_id);
@@ -83,9 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Задача[" + task.getTitle() + "] --> Найдено пересечение с другими задачами." +
                     " Поля duration и startTime инициализированны null");
         }
-
         return true;
-
     }
 
     @Override
@@ -102,11 +102,32 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task o) {
         if ((o != null) && o.getClass() == Task.class) {
-            tasks.put(o.getId(), o);
+            if (isCrossing(o)) {
+                o.setStartTime(null);
+                o.setDuration(null);
+            } else {
+                tasks.put(o.getId(), o);
+            }
+            taskByTime = taskByTime.stream()
+                    .filter(t -> t.getId() != o.getId())
+                    .collect(Collectors.toCollection(() ->
+                            new TreeSet<>(comparator)));
+            taskByTime.add(o);
 
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
-            subTasks.put(subTask.getId(), subTask);
+            if (isCrossing(subTask)) {
+                subTask.setStartTime(null);
+                subTask.setDuration(null);
+            } else {
+                subTasks.put(subTask.getId(), subTask);
+            }
+            taskByTime = taskByTime.stream()
+                    .filter(t -> t.getId() != subTask.getId())
+                    .collect(Collectors.toCollection(() ->
+                            new TreeSet<>(comparator)));
+
+            taskByTime.add(subTask);
 
             for (Epic epic : epics.values()) {
                 ArrayList<SubTask> temp = epic.getTaskList();
@@ -119,13 +140,13 @@ public class InMemoryTaskManager implements TaskManager {
 
             Epic epic = epics.get(subTask.getEpicsId());
             ArrayList<SubTask> temp = epic.getTaskList();
-
             for (SubTask currTask : temp) {
                 if (currTask.getId() == subTask.getId()) {
                     epic.updateSubtask(subTask);
                     break;
                 }
             }
+
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epics.put(epic.getId(), epic);

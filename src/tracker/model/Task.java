@@ -33,6 +33,15 @@ public class Task {
         this.duration = duration;
     }
 
+    public Task(String title, String description, int id, Status status, LocalDateTime startTime, Duration duration) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
     public LocalDateTime getEndTime() {
         if (startTime != null) {
             return startTime.plusMinutes(duration.toMinutes());
