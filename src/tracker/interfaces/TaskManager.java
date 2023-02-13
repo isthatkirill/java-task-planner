@@ -6,6 +6,7 @@ import tracker.model.Task;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public interface TaskManager {
     int getCurrent_id();
@@ -43,5 +44,7 @@ public interface TaskManager {
     void setEpics(HashMap<Integer, Epic> epics);
 
     HistoryManager getHistoryManager();
+
+    TreeSet<Task> getPrioritizedTasks();
 
 }

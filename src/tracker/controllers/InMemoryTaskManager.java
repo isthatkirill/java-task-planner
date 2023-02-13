@@ -7,16 +7,28 @@ import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.util.Managers;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
 
     protected HashMap<Integer, Task> tasks = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
     protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected TreeSet<Task> taskByTime = new TreeSet<>((o1, o2) -> {
+        if (o1.getStartTime() == null) {
+            return 1;
+        } else if (o2.getStartTime() == null) {
+            return -1;
+        }
+        return o1.getStartTime().compareTo(o2.getStartTime());
+    });
     protected int current_id = 0;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm");
 
     @Override
     public HistoryManager getHistoryManager() {
@@ -28,15 +40,21 @@ public class InMemoryTaskManager implements TaskManager {
         if ((o != null) && o.getClass() == Task.class) {
             o.setId(++current_id);
             tasks.put(current_id, o);
+            taskByTime.add(o);
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
             subTask.setId(++current_id);
             subTasks.put(current_id, subTask);
+            taskByTime.add(o);
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epic.setId(++current_id);
             epics.put(current_id, epic);
         }
+    }
+
+    public TreeSet<Task> getPrioritizedTasks() {
+        return taskByTime;
     }
 
     @Override
