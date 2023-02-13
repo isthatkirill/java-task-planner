@@ -1,13 +1,50 @@
-import tracker.interfaces.HistoryManager;
+import tracker.controllers.InMemoryTaskManager;
 import tracker.interfaces.TaskManager;
 import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
-import tracker.util.Managers;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
+        TaskManager taskManager = new InMemoryTaskManager();
+        /*Task task = new Task("Тестовая задача", "Тестовое описание", Status.NEW,
+                LocalDateTime.of(2025, 5, 5, 12, 30), Duration.ofMinutes(15));
+        taskManager.createTask(task);
+        System.out.println(task.getStartTime());
+        System.out.println(task.getDuration());
+        System.out.println(task.getEndTime());*/
+
+
+        Epic epic = new Epic("Epic", "Test epic", Status.NEW);
+        taskManager.createTask(epic);
+
+        SubTask subTask1 = new SubTask("1", "1", Status.NEW,
+                LocalDateTime.of(2025, 5, 5, 13, 30), Duration.ofMinutes(25));
+
+
+
+
+
+        SubTask subTask2 = new SubTask("2", "2", Status.NEW,
+                LocalDateTime.of(2025, 5, 5, 12, 30), Duration.ofMinutes(15));
+        SubTask subTask3 = new SubTask("3", "3", Status.NEW,
+                LocalDateTime.of(2025, 5, 5, 18, 30), Duration.ofMinutes(90));
+        SubTask subTask4 = new SubTask("4", "4", Status.IN_PROGRESS);
+
+        taskManager.fillEpic(epic, subTask1);
+        taskManager.fillEpic(epic, subTask2);
+        taskManager.fillEpic(epic, subTask3);
+        taskManager.fillEpic(epic, subTask4);
+
+        System.out.println(epic.getEndTime());
+        System.out.println(epic.getStartTime());
+        System.out.println(epic);
+
+
     }
 }

@@ -1,10 +1,14 @@
 package tracker.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 
 public class Epic extends Task {
 
     private ArrayList<SubTask> taskList = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String title, String description, Status status) {
         super(title, description, status);
@@ -12,6 +16,19 @@ public class Epic extends Task {
 
     public Epic(String title, int id, String description, Status status) {
         super(title, description, id, status);
+    }
+
+    public ArrayList<SubTask> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(ArrayList<SubTask> taskList) {
+        this.taskList = taskList;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
     @Override
@@ -30,7 +47,23 @@ public class Epic extends Task {
     public void addSubtask(SubTask subtask) {
         taskList.add(subtask);
         changingStatusChecker();
+        changingStartTimeAndEndTimeChecker();
     }
+
+    private void changingStartTimeAndEndTimeChecker() {
+        endTime = taskList.stream()
+                .map(Task::getEndTime)
+                .filter(Objects::nonNull)
+                .max(LocalDateTime::compareTo)
+                .get();
+
+        startTime = taskList.stream()
+                .map(Task::getStartTime)
+                .filter(Objects::nonNull)
+                .min(LocalDateTime::compareTo)
+                .get();
+    }
+
 
     public void deleteSubtask(SubTask subTask) {
         taskList.remove(subTask);
@@ -47,14 +80,6 @@ public class Epic extends Task {
         }
         taskList.set(index, subtask);
         changingStatusChecker();
-    }
-
-    public ArrayList<SubTask> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(ArrayList<SubTask> taskList) {
-        this.taskList = taskList;
     }
 
     private void changingStatusChecker() {
@@ -82,13 +107,15 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "tracker.model.Epic{" +
-                "title='" + title + '\'' +
+        return "Epic{" +
+                "endTime=" + endTime +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
-                ", status='" + status + '\'' +
+                ", status=" + status +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
                 "taskList=" + taskList +
                 '}';
     }
-
 }

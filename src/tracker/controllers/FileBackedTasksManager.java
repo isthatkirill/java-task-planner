@@ -76,7 +76,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public void save() {
         try (PrintWriter printWriter = new PrintWriter(path, "Cp1251")) { //корректное отображение кириллицы
-            printWriter.write("id;type;name;status;description;epic\n");            // в Excel
+            printWriter.write("id;type;name;status;description;epic;startTime;duration;endTime\n");            // в Excel
             for (Task task : super.getTasks().values()) {
                 printWriter.write(toString(task));
             }
