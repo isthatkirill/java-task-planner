@@ -28,12 +28,11 @@ public class Main {
         taskManager.createTask(subTask1);
 
         Task task = new Task("Кот", "Купить корм для кота", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 12, 30), Duration.ofMinutes(15));
+                LocalDateTime.of(2025, 5, 5, 14, 10), Duration.ofMinutes(1));
         taskManager.createTask(task);
 
-
         SubTask subTask2 = new SubTask("2", "2", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 14, 30), Duration.ofMinutes(15));
+                LocalDateTime.of(2025, 5, 5, 13, 00), Duration.ofMinutes(10));
         taskManager.createTask(subTask2);
 
         SubTask subTask3 = new SubTask("3", "3", Status.NEW,

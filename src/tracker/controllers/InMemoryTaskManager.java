@@ -7,6 +7,7 @@ import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.util.Managers;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,12 +41,24 @@ public class InMemoryTaskManager implements TaskManager {
         if ((o != null) && o.getClass() == Task.class) {
             o.setId(++current_id);
             tasks.put(current_id, o);
-            taskByTime.add(o);
+            if (isCrossing(o)) {
+                o.setDuration(null);
+                o.setStartTime(null);
+                taskByTime.add(o);
+            } else {
+                taskByTime.add(o);
+            }
         } else if ((o != null) && o.getClass() == SubTask.class) {
             SubTask subTask = (SubTask) o;
             subTask.setId(++current_id);
             subTasks.put(current_id, subTask);
-            taskByTime.add(o);
+            if (isCrossing(o)) {
+                o.setDuration(null);
+                o.setStartTime(null);
+                taskByTime.add(o);
+            } else {
+                taskByTime.add(o);
+            }
         } else if ((o != null) && o.getClass() == Epic.class) {
             Epic epic = (Epic) o;
             epic.setId(++current_id);
@@ -53,6 +66,29 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public boolean isCrossing(Task task) {
+        if (task.getStartTime() != null && task.getDuration() != null) {
+            if (
+                    taskByTime.stream()
+                            .filter(t -> t.getStartTime() != null && t.getEndTime() != null)
+                            .allMatch(t -> ((task.getStartTime().isBefore(t.getStartTime()) &&
+                                    task.getEndTime().isBefore(t.getStartTime())) ||
+                                    (task.getStartTime().isAfter(t.getEndTime()) &&
+                                            task.getEndTime().isAfter(t.getEndTime()))))
+            ) {
+                return false;
+            }
+            // найдено пересечение с задачами из списка, поля текущей задачи инициализированны null, задача добавлена в список
+            System.out.println("Задача[" + task.getTitle() + "] --> Найдено пересечение с другими задачами." +
+                    " Поля duration и startTime инициализированны null");
+        }
+
+        return true;
+
+    }
+
+    @Override
     public TreeSet<Task> getPrioritizedTasks() {
         return taskByTime;
     }

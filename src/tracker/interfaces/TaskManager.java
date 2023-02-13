@@ -47,4 +47,6 @@ public interface TaskManager {
 
     TreeSet<Task> getPrioritizedTasks();
 
+    boolean isCrossing(Task task);
+
 }
