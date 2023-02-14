@@ -3,6 +3,7 @@ package tracker.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Epic extends Task {
 
@@ -23,6 +24,7 @@ public class Epic extends Task {
 
     public void setTaskList(ArrayList<SubTask> taskList) {
         this.taskList = taskList;
+        changingStartTimeAndEndTimeChecker();
     }
 
     @Override
@@ -50,17 +52,17 @@ public class Epic extends Task {
     }
 
     private void changingStartTimeAndEndTimeChecker() {
-        endTime = taskList.stream()
+         taskList.stream()
                 .map(Task::getEndTime)
                 .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
-                .get();
+                .ifPresent(localDateTime -> endTime = localDateTime);
 
-        startTime = taskList.stream()
+        taskList.stream()
                 .map(Task::getStartTime)
                 .filter(Objects::nonNull)
                 .min(LocalDateTime::compareTo)
-                .get();
+                .ifPresent(localDateTime -> startTime = localDateTime);
     }
 
 
@@ -79,6 +81,7 @@ public class Epic extends Task {
         }
         taskList.set(index, subtask);
         changingStatusChecker();
+        changingStartTimeAndEndTimeChecker();
     }
 
     private void changingStatusChecker() {
@@ -113,7 +116,7 @@ public class Epic extends Task {
                 ", status=" + status +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                "taskList=" + taskList +
+                ", taskList=" + taskList +
                 '}';
     }
 }

@@ -28,7 +28,7 @@ public class Main {
         taskManager.createTask(subTask1);
 
         Task task = new Task("Кот", "Купить корм для кота", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 14, 10), Duration.ofMinutes(1));
+                LocalDateTime.of(2025, 5, 5, 13, 10), Duration.ofMinutes(100));
         taskManager.createTask(task);
 
         SubTask subTask2 = new SubTask("2", "2", Status.NEW,
@@ -53,7 +53,7 @@ public class Main {
 
 
         subTask2 = new SubTask("2", "2", subTask2.getId(), Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 16, 40), Duration.ofMinutes(30));
+                LocalDateTime.of(2025, 6, 5, 10, 40), Duration.ofMinutes(30));
         taskManager.updateTask(subTask2);
 
         System.out.println(epic);

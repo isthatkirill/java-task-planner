@@ -1,4 +1,8 @@
 id;type;name;status;description;epic;startTime;duration;endTime
-1;Task;Кот;NEW;Купить корм для кота;;2025.05.05, 12:30;PT15M;2025.05.05, 12:45
+1;Task;Кот;NEW;Купить корм для кота;;2025.05.05, 16:10;PT10M;2025.05.05, 16:20
+2;Epic;Уборка;IN_PROGRESS;Генеральная уборка в эту среду;;2025.05.05, 19:10;null;2025.05.05, 20:24
+3;SubTask;Test;NEW;Test subtask;2;2025.05.05, 19:10;PT10M;2025.05.05, 19:20
+4;SubTask;Мытье полов;NEW;Помыть полы во всех комнатах;2;
+5;SubTask;Test-1000;DONE;testing testing-updated;2;2025.05.05, 19:30;PT54M;2025.05.05, 20:24
 
-1;
+3;2;1;
