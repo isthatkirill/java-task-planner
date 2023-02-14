@@ -11,16 +11,13 @@ import java.time.LocalDateTime;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new InMemoryTaskManager();
-        /*Task task = new Task("Тестовая задача", "Тестовое описание", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 12, 30), Duration.ofMinutes(15));
-        taskManager.createTask(task);
-        System.out.println(task.getStartTime());
-        System.out.println(task.getDuration());
-        System.out.println(task.getEndTime());*/
 
+        TaskManager taskManager = new InMemoryTaskManager();
 
         Epic epic = new Epic("Epic", "Test epic", Status.NEW);
+        taskManager.createTask(epic);
+
+        Epic epic2 = new Epic("Epic2", "Test epic2", Status.NEW);
         taskManager.createTask(epic);
 
         SubTask subTask1 = new SubTask("1", "1", Status.NEW,
@@ -28,10 +25,14 @@ public class Main {
         taskManager.createTask(subTask1);
 
         Task task = new Task("Кот", "Купить корм для кота", Status.NEW,
-                LocalDateTime.of(2025, 5, 5, 13, 10), Duration.ofMinutes(100));
+                LocalDateTime.of(2025, 5, 6, 13, 10), Duration.ofMinutes(100));
         taskManager.createTask(task);
 
-        SubTask subTask2 = new SubTask("2", "2", Status.NEW,
+        Task task2 = new Task("Кот-rjn", "??????", Status.NEW,
+                LocalDateTime.of(2025, 5, 7, 13, 10), Duration.ofMinutes(100));
+        taskManager.createTask(task2);
+
+        SubTask subTask2 = new SubTask("ab ab ab", "ab ab ab", Status.NEW,
                 LocalDateTime.of(2025, 5, 5, 19, 10), Duration.ofMinutes(10));
         taskManager.createTask(subTask2);
 
@@ -47,19 +48,26 @@ public class Main {
         taskManager.fillEpic(epic, subTask3);
         taskManager.fillEpic(epic, subTask4);
 
-        System.out.println(epic);
-        System.out.println(taskManager.getPrioritizedTasks());
-        System.out.println();
-
+        System.out.println(taskManager);
 
         subTask2 = new SubTask("2", "2", subTask2.getId(), Status.NEW,
                 LocalDateTime.of(2025, 6, 5, 10, 40), Duration.ofMinutes(30));
         taskManager.updateTask(subTask2);
 
-        System.out.println(epic);
-        System.out.println(taskManager.getPrioritizedTasks());
-        System.out.println();
+        taskManager.getTaskById(subTask2.getId());
+        taskManager.getTaskById(subTask3.getId());
+        taskManager.getTaskById(subTask1.getId());
+        taskManager.getTaskById(epic.getId());
+        taskManager.getTaskById(subTask3.getId());
+        taskManager.getTaskById(task.getId());
 
+        System.out.println(taskManager);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+
+        taskManager.deleteAllEpics();
+
+        System.out.println(taskManager);
+        System.out.println(taskManager.getHistoryManager().getHistory());
 
     }
 }
