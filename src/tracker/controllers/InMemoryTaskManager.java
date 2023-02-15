@@ -81,9 +81,8 @@ public class InMemoryTaskManager implements TaskManager {
             ) {
                 return false;
             }
-            // найдено пересечение с задачами из списка, поля текущей задачи инициализированны null, задача добавлена в список
-            System.out.println("Задача[" + task.getTitle() + "] --> Найдено пересечение с другими задачами." +
-                    " Поля duration и startTime инициализированны null");
+           /* System.out.println("Задача[" + task.getTitle() + "] --> Найдено пересечение с другими задачами." +
+                    " Поля duration и startTime инициализированны null");*/
         }
         return true;
     }
@@ -108,6 +107,7 @@ public class InMemoryTaskManager implements TaskManager {
             } else {
                 tasks.put(o.getId(), o);
             }
+
             taskByTime = taskByTime.stream()
                     .filter(t -> t.getId() != o.getId())
                     .collect(Collectors.toCollection(() ->
@@ -122,26 +122,24 @@ public class InMemoryTaskManager implements TaskManager {
             } else {
                 subTasks.put(subTask.getId(), subTask);
             }
+
             taskByTime = taskByTime.stream()
                     .filter(t -> t.getId() != subTask.getId())
                     .collect(Collectors.toCollection(() ->
                             new TreeSet<>(comparator)));
-
             taskByTime.add(subTask);
 
-            for (Epic epic : epics.values()) {
-                ArrayList<SubTask> temp = epic.getTaskList();
-                for (SubTask subtask_ : temp) {
-                    if (subTask.getId() == subtask_.getId()) {
-                        subTask.setEpicsId(subtask_.getEpicsId());
-                    }
-                }
-            }
+            epics.values().stream()
+                    .flatMap(sub -> sub.getTaskList().stream())
+                    .filter(sub -> subTask.getId() == sub.getId())
+                    .forEach(sub -> {
+                        subTask.setEpicsId(sub.getEpicsId());
+                    });
+
 
             Epic epic = epics.get(subTask.getEpicsId());
-            ArrayList<SubTask> currEpicTaskList = epic.getTaskList();
-
-            for (SubTask currTask : currEpicTaskList) {
+            ArrayList<SubTask> temp = epic.getTaskList();
+            for (SubTask currTask : temp) {
                 if (currTask.getId() == subTask.getId()) {
                     epic.updateSubtask(subTask);
                     break;
@@ -224,28 +222,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void setTasks(HashMap<Integer, Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Override
     public HashMap<Integer, SubTask> getSubTasks() {
         return subTasks;
     }
 
     @Override
-    public void setSubTasks(HashMap<Integer, SubTask> subTasks) {
-        this.subTasks = subTasks;
-    }
-
-    @Override
     public HashMap<Integer, Epic> getEpics() {
         return epics;
-    }
-
-    @Override
-    public void setEpics(HashMap<Integer, Epic> epics) {
-        this.epics = epics;
     }
 
     @Override

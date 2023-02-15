@@ -32,15 +32,9 @@ public interface TaskManager {
 
     HashMap<Integer, Task> getTasks();
 
-    void setTasks(HashMap<Integer, Task> tasks);
-
     HashMap<Integer, SubTask> getSubTasks();
 
-    void setSubTasks(HashMap<Integer, SubTask> subTasks);
-
     HashMap<Integer, Epic> getEpics();
-
-    void setEpics(HashMap<Integer, Epic> epics);
 
     HistoryManager getHistoryManager();
 
