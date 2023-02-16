@@ -162,22 +162,17 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(Status.NEW, epic.getStatus(), "Статусы не совпадают");
 
         subTask2.setStatus(Status.IN_PROGRESS);
-        taskManager.updateTask(subTask2); //new
-        //epic.updateSubtask(subTask2);
+        taskManager.updateTask(subTask2);
 
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статусы не совпадают");
 
         subTask = new SubTask("Subtask", "test subtask", subTask.getId(), Status.DONE);
-        //subTask.setStatus(Status.DONE);
-        taskManager.updateTask(subTask); //new
-        //epic.updateSubtask(subTask);
+        taskManager.updateTask(subTask);
 
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статусы не совпадают");
 
         subTask2 = new SubTask("Subtask 2", "test subtask 2", subTask2.getId(), Status.DONE);
-        //subTask2.setStatus(Status.DONE);
         taskManager.updateTask(subTask2);
-        //epic.updateSubtask(subTask2);
 
         assertEquals(Status.DONE, epic.getStatus(), "Статусы не совпадают");
     }

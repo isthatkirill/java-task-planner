@@ -3,7 +3,6 @@ package tracker.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Epic extends Task {
 
@@ -52,7 +51,7 @@ public class Epic extends Task {
     }
 
     private void changingStartTimeAndEndTimeChecker() {
-         taskList.stream()
+        taskList.stream()
                 .map(Task::getEndTime)
                 .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)

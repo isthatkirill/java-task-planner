@@ -142,7 +142,7 @@ class HistoryManagerTest {
 
         taskManager.getHistoryManager().remove(epic.getId());
 
-        assertEquals(new ArrayList<>(), taskManager.getHistoryManager().getHistory());
+        assertEquals(new ArrayList<>(), taskManager.getHistoryManager().getHistory(), "Истории не совпадают");
     }
 
 

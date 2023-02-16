@@ -84,8 +84,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
 
     public void save() {
-        try (PrintWriter printWriter = new PrintWriter(path, "Cp1251")) { //корректное отображение кириллицы
-            printWriter.write("id;type;name;status;description;epic;startTime;duration;endTime\n");            // в Excel
+        try (PrintWriter printWriter = new PrintWriter(path, "Cp1251")) {
+            printWriter.write("id;type;name;status;description;epic;startTime;duration;endTime\n");
             for (Task task : super.getTasks().values()) {
                 printWriter.write(toString(task));
             }
@@ -104,6 +104,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file.getPath());
+        if (file.length() == 0) {
+            return fileManager;
+        }
+
         try (BufferedReader br = new BufferedReader(new FileReader(file, Charset.forName("Cp1251")))) {
             br.readLine();
             int newCurrentIdCounter = 0;
@@ -173,7 +177,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return fileManager;
     }
 
-    public static List<Integer> historyFromString(String value) {
+    private static List<Integer> historyFromString(String value) {
         if (value != null) {
             String[] splittedLine = value.split(";");
             List<Integer> viewedTasksId = new ArrayList<>();

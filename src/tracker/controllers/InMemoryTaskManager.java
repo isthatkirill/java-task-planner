@@ -71,18 +71,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public boolean isCrossing(Task task) {
         if (task.getStartTime() != null && task.getDuration() != null) {
-            if (
-                    taskByTime.stream()
-                            .filter(t -> t.getStartTime() != null && t.getEndTime() != null)
-                            .allMatch(t -> ((task.getStartTime().isBefore(t.getStartTime()) &&
-                                    task.getEndTime().isBefore(t.getStartTime())) ||
-                                    (task.getStartTime().isAfter(t.getEndTime()) &&
-                                            task.getEndTime().isAfter(t.getEndTime()))))
-            ) {
-                return false;
-            }
-           /* System.out.println("Задача[" + task.getTitle() + "] --> Найдено пересечение с другими задачами." +
-                    " Поля duration и startTime инициализированны null");*/
+            return !taskByTime.stream()
+                    .filter(t -> t.getStartTime() != null && t.getEndTime() != null)
+                    .allMatch(t -> ((task.getStartTime().isBefore(t.getStartTime()) &&
+                            task.getEndTime().isBefore(t.getStartTime())) ||
+                            (task.getStartTime().isAfter(t.getEndTime()) &&
+                                    task.getEndTime().isAfter(t.getEndTime()))));
         }
         return true;
     }

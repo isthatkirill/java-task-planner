@@ -33,7 +33,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         private Node<T> head;
         private Node<T> tail;
-
         private final HashMap<Integer, Node<T>> nodesMap = new HashMap<>();
 
         public HashMap<Integer, Node<T>> getNodesMap() {
@@ -41,7 +40,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         public void linkLast(T task) {
-
             if (nodesMap.containsKey(task.getId())) {
                 removeNode(nodesMap.get(task.getId()));
                 nodesMap.remove(task.getId());
