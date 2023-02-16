@@ -6,7 +6,7 @@ import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EpicTest {
 
@@ -15,7 +15,7 @@ class EpicTest {
 
     @BeforeEach
     public void beforeEach() {
-        epic =  new Epic("Epic", "Test epic", Status.NEW);
+        epic = new Epic("Epic", "Test epic", Status.NEW);
         taskManager = new InMemoryTaskManager();
     }
 
@@ -44,7 +44,6 @@ class EpicTest {
         taskManager.fillEpic(epic, subtask);
         taskManager.fillEpic(epic, subtask2);
         assertEquals(Status.DONE, epic.getStatus(), "Статус не совпадает");
-
     }
 
     @Test
@@ -67,7 +66,6 @@ class EpicTest {
         taskManager.fillEpic(epic, subtask);
         taskManager.fillEpic(epic, subtask2);
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статус не совпадает");
-
     }
 
 }
