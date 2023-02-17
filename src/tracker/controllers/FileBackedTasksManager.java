@@ -2,7 +2,6 @@ package tracker.controllers;
 
 import tracker.exceptions.ManagerSaveException;
 import tracker.interfaces.HistoryManager;
-import tracker.interfaces.TaskManager;
 import tracker.model.*;
 
 import java.io.*;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private final String path;
 

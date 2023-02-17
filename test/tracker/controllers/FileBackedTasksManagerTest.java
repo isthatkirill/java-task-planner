@@ -113,17 +113,17 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
 
     @Test
     public void readingFromNonExistentFileShouldThrowException() {
-        assertThrows(ManagerSaveException.class, () -> {
-            FileBackedTasksManager invalidNManager = FileBackedTasksManager.loadFromFile(new File("nonExistentFile.txt"));
-        });
+        Executable executable = () -> FileBackedTasksManager.loadFromFile(new File("nonExistentFile.txt"));
+        assertThrows(ManagerSaveException.class, executable);
     }
 
     @Test
     public void savingInFileWithWrongPathnameShouldThrowException() {
-        assertThrows(ManagerSaveException.class, () -> {
-            FileBackedTasksManager invalidNManager = new FileBackedTasksManager("resources.jar/wrong-path#name.bat<>/..,");
-            Task task = new Task("Task", "Test task", Status.NEW);
-            invalidNManager.createTask(task);
-        });
+        FileBackedTasksManager invalidNManager = new FileBackedTasksManager("resources.jar/wrong-path#name.bat<>/..,");
+        Task task = new Task("Task", "Test task", Status.NEW);
+
+        Executable executable = () -> invalidNManager.createTask(task);
+
+        assertThrows(ManagerSaveException.class, executable);
     }
 }
