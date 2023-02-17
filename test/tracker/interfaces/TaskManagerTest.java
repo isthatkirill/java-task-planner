@@ -1,5 +1,6 @@
+package tracker.interfaces;
+
 import org.junit.jupiter.api.Test;
-import tracker.interfaces.TaskManager;
 import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
 
-    T taskManager;
+    protected T taskManager;
 
     @Test
     public void createTaskTest() {

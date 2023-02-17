@@ -1,5 +1,7 @@
+package tracker.controllers;
+
 import org.junit.jupiter.api.BeforeEach;
-import tracker.controllers.InMemoryTaskManager;
+import tracker.interfaces.TaskManagerTest;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

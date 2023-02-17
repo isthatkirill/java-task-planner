@@ -1,7 +1,8 @@
+package tracker.interfaces;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tracker.controllers.InMemoryTaskManager;
-import tracker.interfaces.TaskManager;
 import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
@@ -12,12 +13,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class HistoryManagerTest {
+public class HistoryManagerTest {
 
-    TaskManager taskManager;
-    Task task, task2;
-    Epic epic;
-    SubTask subTask, subTask2;
+    private TaskManager taskManager;
+    private Task task, task2;
+    private Epic epic;
+    private SubTask subTask, subTask2;
 
     @BeforeEach
     public void beforeEach() {

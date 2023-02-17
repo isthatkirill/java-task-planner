@@ -104,10 +104,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file.getPath());
-        if (file.length() == 0) {
-            return fileManager;
-        }
-
         try (BufferedReader br = new BufferedReader(new FileReader(file, Charset.forName("Cp1251")))) {
             br.readLine();
             int newCurrentIdCounter = 0;
