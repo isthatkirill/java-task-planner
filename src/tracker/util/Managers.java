@@ -1,5 +1,6 @@
 package tracker.util;
 
+import tracker.controllers.FileBackedTasksManager;
 import tracker.controllers.InMemoryHistoryManager;
 import tracker.controllers.InMemoryTaskManager;
 import tracker.interfaces.HistoryManager;
@@ -13,4 +14,7 @@ public class Managers {
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
+
+    public static TaskManager getFileBacked() { return new FileBackedTasksManager("resources/data.csv"); }
+
 }
