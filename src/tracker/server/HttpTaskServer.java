@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import tracker.interfaces.TaskManager;
+import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
@@ -15,7 +16,8 @@ import tracker.server.adapters.LocalDateTimeDeserializer;
 import tracker.server.adapters.LocalDateTimeSerializer;
 import tracker.util.Managers;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.time.Duration;
@@ -38,15 +40,24 @@ public class HttpTaskServer {
     private HttpServer httpServer;
 
     {
-        Task task = new Task("1", "1", Status.NEW);
+        Task task = new Task("1", "1", Status.NEW,
+                LocalDateTime.of(2022, 2, 2, 3, 2), Duration.ofMinutes(35));
         Task task1 = new Task("2", "2", Status.NEW,
                 LocalDateTime.of(2022, 2, 2, 2, 2), Duration.ofMinutes(15));
         taskManager.createTask(task);
         taskManager.createTask(task1);
-        SubTask subTask = new SubTask("3", "3", Status.NEW);
-        SubTask subTask1 = new SubTask("4", "4", Status.NEW);
+
+        Epic epic = new Epic("test epic", "test", Status.NEW);
+        taskManager.createTask(epic);
+
+        SubTask subTask = new SubTask("3", "3", Status.NEW,
+                LocalDateTime.of(2022, 12, 3, 2, 30), Duration.ofMinutes(15));
+        SubTask subTask1 = new SubTask("4", "4", Status.NEW,
+                LocalDateTime.of(2022, 12, 3, 4, 30), Duration.ofMinutes(25));
         taskManager.createTask(subTask);
         taskManager.createTask(subTask1);
+
+        taskManager.fillEpic(epic, subTask);
     }
 
     public HttpTaskServer() {
@@ -61,7 +72,6 @@ public class HttpTaskServer {
         }
     }
 
-
     private class TaskHandler implements HttpHandler {
 
         @Override
@@ -74,19 +84,18 @@ public class HttpTaskServer {
                     break;
 
                 case GET_TASK_BY_ID:
-                    int id = Integer.parseInt(path.split("=")[1]);
-                    Task task = taskManager.getTaskById(id);
+                    int taskID = Integer.parseInt(path.split("=")[1]);
+                    Task task = taskManager.getTaskById(taskID);
                     if (task != null && task.getClass() == Task.class) {
-                        writeResponse(httpExchange, gson.toJson(taskManager.getTaskById(id)), 200);
+                        writeResponse(httpExchange, gson.toJson(taskManager.getTaskById(taskID)), 200);
                     } else {
-                        writeResponse(httpExchange, "Задачи типа Task c id = " + id + " не существует", 404);
+                        writeResponse(httpExchange, "Задачи типа Task c id = " + taskID + " не существует", 404);
                     }
                     break;
 
                 case POST_ADD_TASK:
                     String taskBody = new String(httpExchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
                     Task tempTask = gson.fromJson(taskBody, Task.class);
-
                     if (taskManager.getTasks().containsKey(tempTask.getId())) {
                         taskManager.updateTask(tempTask);
                         writeResponse(httpExchange, "[Task] Задача обновлена", 201);
@@ -102,7 +111,7 @@ public class HttpTaskServer {
                     break;
 
                 case DELETE_TASK_BY_ID:
-                    int taskID = Integer.parseInt(path.split("=")[1]);
+                    taskID = Integer.parseInt(path.split("=")[1]);
                     if (taskManager.getTasks().containsKey(taskID)) {
                         taskManager.deleteTaskById(taskID);
                         writeResponse(httpExchange, "[Task] Задача удалена", 201);
@@ -125,19 +134,97 @@ public class HttpTaskServer {
                     }
                     break;
 
+                case POST_ADD_SUBTASK:
+                    String subtaskBody = new String(httpExchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+                    SubTask tempSubtask = gson.fromJson(subtaskBody, SubTask.class);
+                    if (taskManager.getSubTasks().containsKey(tempSubtask.getId())) {
+                        taskManager.updateTask(tempSubtask);
+                        writeResponse(httpExchange, "[Subtask] Задача обновлена", 201);
+                    } else {
+                        taskManager.createTask(tempSubtask);
+                        writeResponse(httpExchange, "[Subtask] Задача создана", 201);
+                    }
+                    break;
+
                 case DELETE_ALL_SUBTASKS:
                     taskManager.getSubTasks().clear();
                     writeResponse(httpExchange, "[Subtask] Задачи удалены", 201);
                     break;
 
+                case DELETE_SUBTASK_BY_ID:
+                    subtaskID = Integer.parseInt(path.split("=")[1]);
+                    if (taskManager.getSubTasks().containsKey(subtaskID)) {
+                        taskManager.deleteSubTaskById(subtaskID);
+                        writeResponse(httpExchange, "[Subtask] Задача удалена", 201);
+                    } else {
+                        writeResponse(httpExchange, "[Subtask] Задачи не существует", 404);
+                    }
+                    break;
+
+                case GET_EPICS:
+                    writeResponse(httpExchange, gson.toJson(taskManager.getEpics()), 200);
+                    break;
+
+                case GET_EPIC_BY_ID:
+                    int epicID = Integer.parseInt(path.split("=")[1]);
+                    Task epic = taskManager.getTaskById(epicID);
+                    if (epic != null && epic.getClass() == Epic.class) {
+                        writeResponse(httpExchange, gson.toJson(taskManager.getTaskById(epicID)), 200);
+                    } else {
+                        writeResponse(httpExchange, "Задачи типа Epic c id = " + epicID + " не существует", 404);
+                    }
+                    break;
+
+                case POST_ADD_EPIC:
+                    String epicsBody = new String(httpExchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+                    Epic tempEpic = gson.fromJson(epicsBody, Epic.class);
+                    if (taskManager.getEpics().containsKey(tempEpic.getId())) {
+                        taskManager.updateTask(tempEpic);
+                        writeResponse(httpExchange, "[Epic] Задача обновлена", 201);
+                    } else {
+                        taskManager.createTask(tempEpic);
+                        writeResponse(httpExchange, "[Epic] Задача создана", 201);
+                    }
+                    break;
+
+                case DELETE_ALL_EPIC:
+                    taskManager.getSubTasks().clear();
+                    taskManager.getEpics().clear();
+                    writeResponse(httpExchange, "[Epic] Задачи удалены", 200);
+                    break;
+
+                case DELETE_EPIC_BY_ID:
+                    epicID = Integer.parseInt(path.split("=")[1]);
+                    if (taskManager.getEpics().containsKey(epicID)) {
+                        taskManager.deleteEpicById(epicID);
+                        writeResponse(httpExchange, "[Epic] Задача удалена", 200);
+                    } else {
+                        writeResponse(httpExchange, "[Epic] Задачи не существует", 404);
+                    }
+                    break;
+
+                case GET_EPIC_SUBTASKS:
+                    epicID = Integer.parseInt(path.split("=")[1]);
+                    if (taskManager.getEpics().containsKey(epicID)) {
+                        writeResponse(httpExchange, gson.toJson(taskManager.getEpics().get(epicID).getTaskList()), 200);
+                    } else {
+                        writeResponse(httpExchange, "[Epic] Задачи не существует", 404);
+                    }
+                    break;
+
+                case GET_HISTORY:
+                    writeResponse(httpExchange, gson.toJson(taskManager.getHistoryManager().getHistory()), 200);
+                    break;
+
+                case GET_PRIORITIZED:
+                    writeResponse(httpExchange, gson.toJson(taskManager.getPrioritizedTasks()), 200);
+                    break;
 
                 default:
                     writeResponse(httpExchange, "Такого эндпоинта не существует", 406);
             }
         }
     }
-
-
 
     private void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
         if (responseString.isBlank()) {
@@ -154,6 +241,7 @@ public class HttpTaskServer {
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
+
         if (pathParts.length == 3 && pathParts[2].equals("task") && requestMethod.equals("GET")) {
             return Endpoint.GET_TASKS;
         } else if (pathParts.length == 3 && pathParts[2].startsWith("task?id=") && requestMethod.equals("GET")) {
@@ -168,10 +256,29 @@ public class HttpTaskServer {
             return Endpoint.GET_SUBTASKS;
         } else if (pathParts.length == 3 && pathParts[2].startsWith("subtask?id=") && requestMethod.equals("GET")) {
             return Endpoint.GET_SUBTASK_BY_ID;
+        } else if (pathParts.length == 3 && pathParts[2].equals("subtask") && requestMethod.equals("POST")) {
+            return Endpoint.POST_ADD_SUBTASK;
+        } else if (pathParts.length == 3 && pathParts[2].startsWith("subtask?id=") && requestMethod.equals("DELETE")) {
+            return Endpoint.DELETE_SUBTASK_BY_ID;
         } else if (pathParts.length == 3 && pathParts[2].equals("subtask") && requestMethod.equals("DELETE")) {
             return Endpoint.DELETE_ALL_SUBTASKS;
+        } else if (pathParts.length == 3 && pathParts[2].equals("epic") && requestMethod.equals("GET")) {
+            return Endpoint.GET_EPICS;
+        } else if (pathParts.length == 3 && pathParts[2].startsWith("epic?id=") && requestMethod.equals("GET")) {
+            return Endpoint.GET_EPIC_BY_ID;
+        } else if (pathParts.length == 3 && pathParts[2].equals("epic") && requestMethod.equals("POST")) {
+            return Endpoint.POST_ADD_EPIC;
+        } else if (pathParts.length == 3 && pathParts[2].equals("epic") && requestMethod.equals("DELETE")) {
+            return Endpoint.DELETE_ALL_EPIC;
+        } else if (pathParts.length == 3 && pathParts[2].startsWith("epic?id=") && requestMethod.equals("DELETE")) {
+            return Endpoint.DELETE_EPIC_BY_ID;
+        } else if (pathParts.length == 4 && pathParts[2].equals("subtask") && pathParts[3].startsWith("epic?id=") && requestMethod.equals("GET")) {
+            return Endpoint.GET_EPIC_SUBTASKS;
+        } else if (pathParts.length == 3 && pathParts[2].equals("history") && requestMethod.equals("GET")) {
+            return Endpoint.GET_HISTORY;
+        } else if (pathParts.length == 2 && pathParts[1].equals("tasks")) {
+            return Endpoint.GET_PRIORITIZED;
         }
-
         return Endpoint.UNKNOWN;
     }
 

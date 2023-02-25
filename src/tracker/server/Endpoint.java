@@ -17,6 +17,7 @@ public enum Endpoint {
     DELETE_EPIC_BY_ID,
     DELETE_ALL_EPIC,
     GET_EPIC_SUBTASKS,
+    POST_FILL_EPIC,
     GET_HISTORY,
     GET_PRIORITIZED,
     UNKNOWN
