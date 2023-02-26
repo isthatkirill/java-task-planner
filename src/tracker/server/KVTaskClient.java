@@ -12,7 +12,6 @@ public class KVTaskClient {
     private String apiToken;
     HttpClient httpClient;
 
-
     public KVTaskClient(String path) {
         this.url = URI.create(path);
         httpClient = HttpClient.newHttpClient();
@@ -48,8 +47,6 @@ public class KVTaskClient {
                 .uri(uri)
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-
-
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println("Response code: " + response.statusCode());
@@ -58,20 +55,21 @@ public class KVTaskClient {
         }
     }
 
-    public void load(String key) {
+    public String load(String key) {
         URI uri = URI.create(this.url + "/load/" + key + "?API_TOKEN=" + apiToken);
 
         HttpRequest request = HttpRequest
                 .newBuilder()
                 .uri(uri)
+                .GET()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Data: \n" + response.body());
+            return response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

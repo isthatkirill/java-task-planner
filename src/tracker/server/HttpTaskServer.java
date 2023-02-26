@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 
 public class HttpTaskServer {
 
-    private final TaskManager taskManager = Managers.getFileBacked();
+    private final TaskManager taskManager = Managers.getDefault();
 
     private final int PORT = 8080;
     private final Charset DEFAULT_CHARSET = Charset.defaultCharset();
@@ -65,11 +65,14 @@ public class HttpTaskServer {
             httpServer = HttpServer.create();
             httpServer.bind(new InetSocketAddress(PORT), 0);
             httpServer.createContext("/tasks", new TaskHandler());
-            httpServer.start();
             System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void start() {
+        httpServer.start();
     }
 
     private class TaskHandler implements HttpHandler {
@@ -284,5 +287,9 @@ public class HttpTaskServer {
 
     public void stop() {
         httpServer.stop(0);
+    }
+
+    public TaskManager getTaskManager() {
+        return taskManager;
     }
 }

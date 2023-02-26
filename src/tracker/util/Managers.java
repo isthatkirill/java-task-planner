@@ -1,6 +1,7 @@
 package tracker.util;
 
 import tracker.controllers.FileBackedTasksManager;
+import tracker.controllers.HttpTaskManager;
 import tracker.controllers.InMemoryHistoryManager;
 import tracker.controllers.InMemoryTaskManager;
 import tracker.interfaces.HistoryManager;
@@ -8,13 +9,11 @@ import tracker.interfaces.TaskManager;
 
 public class Managers {
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return new HttpTaskManager("http://localhost:8078");
     }
 
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
-
-    public static TaskManager getFileBacked() { return new FileBackedTasksManager("resources/data.csv"); }
 
 }

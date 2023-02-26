@@ -2,8 +2,6 @@
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-c
-3src/tracker/controllers/InMemoryHistoryManager.java,d\8\d887e960af2aa7416d68d750f122f376c525b72e
 Q
 !src/tracker/controllers/Node.java,d\b\db320e6237e9523279dedbac337df37f9effb06e
 Z
@@ -24,8 +22,6 @@ _
 /test/tracker/interfaces/HistoryManagerTest.java,c\e\ce3d321272e8adf0eb5e04d94825988cbf89565f
 \
 ,test/tracker/interfaces/TaskManagerTest.java,8\1\810e88c39a542976d9ec40ae3552a24b88741b79
-N
-src/tracker/util/Managers.java,9\1\919726cb9c4ba5151071cde26835b57ecb693ccc
 e
 5test/tracker/controllers/InMemoryTaskManagerTest.java,9\d\9def348b345d4ebb895a9d7cfcac415d5631e436
 K
@@ -38,3 +34,5 @@ j
 :src/tracker/server/adapters/LocalDateTimeDeserializer.java,7\3\7319ad2f2866d8295717629f40e8887606d75a93
 e
 5src/tracker/server/adapters/DurationDeserializer.java,f\4\f40e94e1820d8619f90e03e610e953caeecf68ef
+W
+'src/tracker/interfaces/TaskManager.java,f\e\fe97066fe25aa7a6bc2bf27a6c14e2ced32ac0bf
