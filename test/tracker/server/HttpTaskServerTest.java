@@ -54,7 +54,6 @@ class HttpTaskServerTest {
             kvServer = new KVServer();
             kvServer.start();
             httpTaskServer = new HttpTaskServer();
-
             httpTaskServer.start();
             createTestData();
         } catch (IOException e) {
@@ -491,6 +490,76 @@ class HttpTaskServerTest {
                 assertEquals(expectedHistory.get(i).getStartTime(), actualHistory.get(i).getStartTime());
                 assertEquals(expectedHistory.get(i).getDuration(), actualHistory.get(i).getDuration());
             }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void addTaskTest() {
+        URI url = URI.create(SERVER_PATH + "/tasks/task");
+        Task task = new Task("new task", "desc", Status.NEW);
+        HttpRequest.BodyPublisher bp = HttpRequest.BodyPublishers.ofString(gson.toJson(task));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(bp)
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body();
+
+            int expectedStatusCode = 201;
+            int actualStatusCode = response.statusCode();
+
+            assertEquals(expectedStatusCode, actualStatusCode);
+            getTasksTest();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void addSubtaskTest() {
+        URI url = URI.create(SERVER_PATH + "/tasks/subtask");
+        SubTask subtask = new SubTask("new subtask", "desc", Status.NEW);
+        HttpRequest.BodyPublisher bp = HttpRequest.BodyPublishers.ofString(gson.toJson(subtask));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(bp)
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            int expectedStatusCode = 201;
+            int actualStatusCode = response.statusCode();
+
+            assertEquals(expectedStatusCode, actualStatusCode);
+            getSubtasksTest();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void addEpicTest() {
+        URI url = URI.create(SERVER_PATH + "/tasks/epic");
+        Epic epic = new Epic("new epic", "desc", Status.NEW);
+        HttpRequest.BodyPublisher bp = HttpRequest.BodyPublishers.ofString(gson.toJson(epic));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(bp)
+                .build();
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            int expectedStatusCode = 201;
+            int actualStatusCode = response.statusCode();
+
+            assertEquals(expectedStatusCode, actualStatusCode);
+            getEpicsTest();
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

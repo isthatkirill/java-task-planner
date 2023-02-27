@@ -1,6 +1,0 @@
-id;type;name;status;description;epic;startTime;duration;endTime
-1;Task;Task;NEW;test task;;
-2;Epic;Epic;NEW;test epic;;
-3;SubTask;Subtask;NEW;test subtask;2;
-
-1;3;2;

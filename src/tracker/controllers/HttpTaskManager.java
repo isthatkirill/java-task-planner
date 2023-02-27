@@ -2,6 +2,9 @@ package tracker.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import tracker.model.Epic;
+import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.server.KVTaskClient;
 import tracker.server.adapters.DurationDeserializer;
@@ -9,6 +12,8 @@ import tracker.server.adapters.DurationSerializer;
 import tracker.server.adapters.LocalDateTimeDeserializer;
 import tracker.server.adapters.LocalDateTimeSerializer;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,10 +47,15 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
 
     public void load() {
-        tasks = gson.fromJson(kvClient.load("tasks"), HashMap.class);
-        epics = gson.fromJson(kvClient.load("epics"), HashMap.class);
-        subTasks = gson.fromJson(kvClient.load("subtasks"), HashMap.class);
-        ArrayList<Task> historyList = getHistoryManager().getHistory();
-        historyList = gson.fromJson(kvClient.load("history"), ArrayList.class);
+            Type type = new TypeToken<HashMap<Integer, Task>>(){}.getType();
+            tasks = gson.fromJson(kvClient.load("tasks"), type);
+            type = new TypeToken<HashMap<Integer, Epic>>(){}.getType();
+            epics = gson.fromJson(kvClient.load("epics"), type);
+            type = new TypeToken<HashMap<Integer, SubTask>>(){}.getType();
+            subTasks = gson.fromJson(kvClient.load("subtasks"), type);
+            type = new TypeToken<ArrayList<Task>>(){}.getType();
+            ArrayList<Task> historyList = getHistoryManager().getHistory();
+            historyList = gson.fromJson(kvClient.load("history"), type);
+
     }
 }

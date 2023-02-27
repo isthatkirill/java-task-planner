@@ -1,6 +1,7 @@
 package tracker.server;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,14 +9,14 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
  */
 public class KVServer {
     public static final int PORT = 8078;
+
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
@@ -45,7 +46,7 @@ public class KVServer {
                 }
 
                 String value = data.get(key);
-                if (value.isEmpty()) {
+                if (value == null) {
                     System.out.println("Value для отправки пустой.");
                     h.sendResponseHeaders(400, 0);
                     return;
@@ -57,7 +58,7 @@ public class KVServer {
                     os.write(value.getBytes(UTF_8));
                 }
             }
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             h.close();
@@ -142,4 +143,9 @@ public class KVServer {
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
     }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
 }

@@ -28,11 +28,5 @@ j
 :src/tracker/server/adapters/LocalDateTimeDeserializer.java,7\3\7319ad2f2866d8295717629f40e8887606d75a93
 e
 5src/tracker/server/adapters/DurationDeserializer.java,f\4\f40e94e1820d8619f90e03e610e953caeecf68ef
-P
- src/tracker/server/Endpoint.java,e\a\ea2c83f285d64bb6d8b02c933290c6ec7f271f2f
-c
-3src/tracker/controllers/InMemoryHistoryManager.java,d\8\d887e960af2aa7416d68d750f122f376c525b72e
 c
 3src/tracker/controllers/FileBackedTasksManager.java,2\4\2474c41b355a5a7c49ea8738fa0f795b94d8151a
-W
-'src/tracker/interfaces/TaskManager.java,f\e\fe97066fe25aa7a6bc2bf27a6c14e2ced32ac0bf
