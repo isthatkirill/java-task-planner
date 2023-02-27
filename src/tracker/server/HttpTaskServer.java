@@ -39,27 +39,6 @@ public class HttpTaskServer {
             .create();
     private HttpServer httpServer;
 
-    {
-        Task task = new Task("1", "1", Status.NEW,
-                LocalDateTime.of(2022, 2, 2, 3, 2), Duration.ofMinutes(35));
-        Task task1 = new Task("2", "2", Status.NEW,
-                LocalDateTime.of(2022, 2, 2, 2, 2), Duration.ofMinutes(15));
-        taskManager.createTask(task);
-        taskManager.createTask(task1);
-
-        Epic epic = new Epic("test epic", "test", Status.NEW);
-        taskManager.createTask(epic);
-
-        SubTask subTask = new SubTask("3", "3", Status.NEW,
-                LocalDateTime.of(2022, 12, 3, 2, 30), Duration.ofMinutes(15));
-        SubTask subTask1 = new SubTask("4", "4", Status.NEW,
-                LocalDateTime.of(2022, 12, 3, 4, 30), Duration.ofMinutes(25));
-        taskManager.createTask(subTask);
-        taskManager.createTask(subTask1);
-
-        taskManager.fillEpic(epic, subTask);
-    }
-
     public HttpTaskServer() {
         try {
             httpServer = HttpServer.create();

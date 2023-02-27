@@ -16,14 +16,8 @@ P
  src/tracker/model/TaskTypes.java,c\c\cc2a0b36d73db06ce33f35cd291cbfd0ec6463cc
 P
  test/tracker/model/EpicTest.java,8\4\84f0eeef218a372513f05bb91b2d2e4358c5b711
-h
-8test/tracker/controllers/FileBackedTasksManagerTest.java,9\7\97431610a77d62b8f241093034b33db1cac1a703
-_
-/test/tracker/interfaces/HistoryManagerTest.java,c\e\ce3d321272e8adf0eb5e04d94825988cbf89565f
 \
 ,test/tracker/interfaces/TaskManagerTest.java,8\1\810e88c39a542976d9ec40ae3552a24b88741b79
-e
-5test/tracker/controllers/InMemoryTaskManagerTest.java,9\d\9def348b345d4ebb895a9d7cfcac415d5631e436
 K
 src/tracker/model/Task.java,8\8\88721811b07005b626ef7fb9cbd161457671a157
 h
@@ -34,5 +28,11 @@ j
 :src/tracker/server/adapters/LocalDateTimeDeserializer.java,7\3\7319ad2f2866d8295717629f40e8887606d75a93
 e
 5src/tracker/server/adapters/DurationDeserializer.java,f\4\f40e94e1820d8619f90e03e610e953caeecf68ef
+P
+ src/tracker/server/Endpoint.java,e\a\ea2c83f285d64bb6d8b02c933290c6ec7f271f2f
+c
+3src/tracker/controllers/InMemoryHistoryManager.java,d\8\d887e960af2aa7416d68d750f122f376c525b72e
+c
+3src/tracker/controllers/FileBackedTasksManager.java,2\4\2474c41b355a5a7c49ea8738fa0f795b94d8151a
 W
 'src/tracker/interfaces/TaskManager.java,f\e\fe97066fe25aa7a6bc2bf27a6c14e2ced32ac0bf

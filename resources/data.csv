@@ -1,7 +1,6 @@
 id;type;name;status;description;epic;startTime;duration;endTime
-1;Task;1;NEW;1;;2022.02.02, 03:02;PT35M;2022.02.02, 03:37
-2;Task;2;NEW;2;;2022.02.02, 02:02;PT15M;2022.02.02, 02:17
-3;Epic;test epic;NEW;test;;2022.12.03, 02:30;null;2022.12.03, 02:45
-4;SubTask;3;NEW;3;3;2022.12.03, 02:30;PT15M;2022.12.03, 02:45
-5;SubTask;4;NEW;4;0;2022.12.03, 04:30;PT25M;2022.12.03, 04:55
+1;Task;Task;NEW;test task;;
+2;Epic;Epic;NEW;test epic;;
+3;SubTask;Subtask;NEW;test subtask;2;
 
+1;3;2;
