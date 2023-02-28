@@ -1,5 +1,7 @@
 package tracker.server;
 
+import tracker.exceptions.ManagerSaveException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -34,7 +36,7 @@ public class KVTaskClient {
                 apiToken = null;
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Can't do register: ", e);
         }
     }
 
@@ -50,8 +52,11 @@ public class KVTaskClient {
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println("Response code: " + response.statusCode());
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException(String.valueOf(response.statusCode()));
+            }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Can't do save request" , e);
         }
     }
 
@@ -66,10 +71,13 @@ public class KVTaskClient {
                 .build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            int sc = response.statusCode();
+            if (response.statusCode() != 200 && response.statusCode() != 204) {
+                throw new ManagerSaveException(String.valueOf(response.statusCode()));
+            }
             return response.body();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
+            throw new ManagerSaveException("Can't do save request", e);
         }
     }
 }

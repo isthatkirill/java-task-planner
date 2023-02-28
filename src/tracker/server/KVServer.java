@@ -34,7 +34,7 @@ public class KVServer {
             System.out.println("\n/load");
             if (!hasAuth(h)) {
                 System.out.println("Запрос не авторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
-                h.sendResponseHeaders(401, 0);
+                h.sendResponseHeaders(403, 0);
                 return;
             }
             if ("GET".equals(h.getRequestMethod())) {
@@ -48,7 +48,7 @@ public class KVServer {
                 String value = data.get(key);
                 if (value == null) {
                     System.out.println("Value для отправки пустой.");
-                    h.sendResponseHeaders(400, 0);
+                    h.sendResponseHeaders(204, -1); // 204 - no content
                     return;
                 }
 

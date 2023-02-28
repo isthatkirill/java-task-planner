@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import tracker.controllers.HttpTaskManager;
 import tracker.interfaces.TaskManager;
 import tracker.model.Epic;
 import tracker.model.SubTask;
@@ -13,7 +14,6 @@ import tracker.server.adapters.DurationDeserializer;
 import tracker.server.adapters.DurationSerializer;
 import tracker.server.adapters.LocalDateTimeDeserializer;
 import tracker.server.adapters.LocalDateTimeSerializer;
-import tracker.util.Managers;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 
 public class HttpTaskServer {
 
-    private final TaskManager taskManager = Managers.getDefault();
+    private final HttpTaskManager taskManager = new HttpTaskManager("http://localhost:8078");
 
     private final int PORT = 8080;
     private final Charset DEFAULT_CHARSET = Charset.defaultCharset();
@@ -267,7 +267,7 @@ public class HttpTaskServer {
         httpServer.stop(0);
     }
 
-    public TaskManager getTaskManager() {
+    public HttpTaskManager getTaskManager() {
         return taskManager;
     }
 }

@@ -33,10 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HttpTaskServerTest {
 
-    HttpClient httpClient;
-    HttpTaskServer httpTaskServer;
-    HttpTaskManager hts;
-    KVServer kvServer;
+    private HttpClient httpClient;
+    private HttpTaskServer httpTaskServer;
+    private HttpTaskManager hts;
+    private KVServer kvServer;
     private final String SERVER_PATH = "http://localhost:8080";
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())

@@ -47,6 +47,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
 
     public void load() {
+
             Type type = new TypeToken<HashMap<Integer, Task>>(){}.getType();
             tasks = gson.fromJson(kvClient.load("tasks"), type);
             type = new TypeToken<HashMap<Integer, Epic>>(){}.getType();
