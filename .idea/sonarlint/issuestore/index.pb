@@ -36,3 +36,29 @@ c
 3src/tracker/controllers/InMemoryHistoryManager.java,d\8\d887e960af2aa7416d68d750f122f376c525b72e
 _
 /test/tracker/interfaces/HistoryManagerTest.java,c\e\ce3d321272e8adf0eb5e04d94825988cbf89565f
+P
+ src/tracker/server/Endpoint.java,e\a\ea2c83f285d64bb6d8b02c933290c6ec7f271f2f
+T
+$src/tracker/server/KVTaskClient.java,1\b\1b260d0a1bed001173abf4a764d2c6035bdbc080
+V
+&src/tracker/server/HttpTaskServer.java,2\f\2fa6bbf97e3a29a853a921cd0a971d0b131e0c6f
+a
+1test/tracker/controllers/HttpTaskManagerTest.java,b\5\b5f707327af53f23c3efd9e6a452302a96f259c7
+N
+src/tracker/util/Managers.java,9\1\919726cb9c4ba5151071cde26835b57ecb693ccc
+`
+0src/tracker/exceptions/ManagerSaveException.java,7\8\786fddde480bb8f448c7a01862725cde76432737
+[
++test/tracker/server/HttpTaskServerTest.java,d\c\dc02fae254cd00902934b51945bf024778990b21
+\
+,test/tracker/interfaces/TaskManagerTest.java,8\1\810e88c39a542976d9ec40ae3552a24b88741b79
+e
+5test/tracker/controllers/InMemoryTaskManagerTest.java,9\d\9def348b345d4ebb895a9d7cfcac415d5631e436
+h
+8test/tracker/controllers/FileBackedTasksManagerTest.java,9\7\97431610a77d62b8f241093034b33db1cac1a703
+\
+,src/tracker/controllers/HttpTaskManager.java,c\1\c1a8ed3d1553298baee18707e28e4fd086eaece0
+P
+ src/tracker/server/KVServer.java,d\e\de82af38cfb5be6f9ab007aba10675a639f6a736
+=
+src/Main.java,9\2\924f089edb4af5ee45c8a9d1129cd28e2b368138

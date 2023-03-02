@@ -3,6 +3,7 @@
 
 # Config file
 *.xml
+*.iml
 
 # Log file
 *.log
